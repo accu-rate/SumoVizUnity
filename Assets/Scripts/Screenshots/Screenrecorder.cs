@@ -2,6 +2,7 @@
 using System.IO;
 using System.Diagnostics;
 using System;
+using System.Linq;
 
 public static class Screenrecorder {
 
@@ -16,11 +17,24 @@ public static class Screenrecorder {
 		process = new Process ();
 
         String relativeOutFileLoc = @filename; 
-        String ffmpegCommand = "-y -f image2pipe -i - -vf scale=trunc(iw/2)*2:trunc(ih/2)*2 -r 25 -c:v libx264 -pix_fmt yuv420p -crf 18 " + "\"" + relativeOutFileLoc + "\"";
+        String ffmpegCommand = "-y -f image2pipe -i - -vf scale=trunc(iw/2)*2:trunc(ih/2)*2 -r 25 -c:v libx264 -pix_fmt yuv420p -crf 18 " + relativeOutFileLoc;
 
-		process.StartInfo.UseShellExecute = false;
+        // access ffmpeg from crowd:it directory
+        String fileName = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + 
+                                       Path.DirectorySeparatorChar + "accu-rate" +
+                                       Path.DirectorySeparatorChar + "crowd-it" +
+                                       Path.DirectorySeparatorChar + "bin" +
+                                       Path.DirectorySeparatorChar + "ffmpeg";
+
+        DirectoryInfo dirInfo = new DirectoryInfo(fileName);
+        // get latest file
+        FileInfo ffmpegFile = (from f in dirInfo.GetFiles()
+                      orderby f.LastWriteTime descending
+                      select f).First();
+
+        process.StartInfo.UseShellExecute = false;
 		process.StartInfo.RedirectStandardInput = true;
-		process.StartInfo.FileName = "ffmpeg.exe";
+        process.StartInfo.FileName = ffmpegFile.FullName;
 		process.StartInfo.Arguments = ffmpegCommand;
 
 		process.Start ();
@@ -34,8 +48,8 @@ public static class Screenrecorder {
 
     private static String AddQuotesIfRequired(String path) {
         return 
-            path.Contains(" ") && (!path.StartsWith("\"") && !path.EndsWith("\"")) ?
-                "\"" + path + "\"" : path;
+            path.Contains(" ") && (!path.StartsWith(Path.DirectorySeparatorChar.ToString()) && !path.EndsWith(Path.DirectorySeparatorChar.ToString())) ?
+                Path.DirectorySeparatorChar.ToString() + path + Path.DirectorySeparatorChar.ToString() : path;
     }
 
     public static void close() {

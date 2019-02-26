@@ -36,6 +36,9 @@ public class PedestrianMover : MonoBehaviour {
     private void Start() {
         currentTime = 0.1f;
         playButton.onClick.AddListener(delegate () { this.changePlaying(); });
+
+        // TODO: We do not want to get a differnt value for render speed, let unity handle this.
+        renderSpeedField.gameObject.SetActive(false);
     }
 
     internal bool isFirstRound() {
@@ -104,8 +107,8 @@ public class PedestrianMover : MonoBehaviour {
 
 
             if (initialized && currentRealTime * speedFactor >= currentTime ) {
-                // render each second
-                currentTime = currentTime + renderStep;
+                currentTime =  currentTime + Time.deltaTime;
+                //currentTime = currentTime + renderStep;
                 foreach (Transform ped in peds.transform) {
                     ped.GetComponent<Pedestrian>().move(currentTime);
                 }
