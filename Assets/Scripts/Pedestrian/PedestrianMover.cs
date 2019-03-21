@@ -14,7 +14,7 @@ public class PedestrianMover : MonoBehaviour {
     private float speedFactor = 1;
 
     private float currentTime;
-    private float currentRealTime;
+//    private float currentRealTime;
     private float maxTime = 0;
     // for recording purpose: only first round is recorded
     private bool firstRound;
@@ -54,7 +54,6 @@ public class PedestrianMover : MonoBehaviour {
         initialized = true;
         roundCounter = 0;
         currentTime = 0.1f;
-        currentRealTime = 0;
         maxTime = simData.getMaxTime();
         firstRound = true;
 
@@ -80,7 +79,7 @@ public class PedestrianMover : MonoBehaviour {
 
     public bool isPlaying() {
         return playing;
-    } 
+    }
 
     public void Reset() {
         playing = false;
@@ -92,11 +91,10 @@ public class PedestrianMover : MonoBehaviour {
 
         if (playing && initialized) {
             // old approach
-            currentRealTime = currentRealTime + Time.deltaTime;
- 
+            currentTime = (currentTime + Time.deltaTime) * speedFactor;
+
             if (currentTime >= maxTime) { // new round
-                currentTime = 0.1f;
-                currentRealTime = 0;
+                currentTime = 0;
                 firstRound = false;
 
                 foreach (Transform ped in peds.transform) {
@@ -105,15 +103,10 @@ public class PedestrianMover : MonoBehaviour {
                 roundCounter++;
             }
 
-
-            if (initialized && currentRealTime * speedFactor >= currentTime ) {
-                currentTime =  currentTime + Time.deltaTime;
-                //currentTime = currentTime + renderStep;
-                foreach (Transform ped in peds.transform) {
-                    ped.GetComponent<Pedestrian>().move(currentTime);
-                }
-                updateSlider();
+             foreach (Transform ped in peds.transform) {
+                ped.GetComponent<Pedestrian>().move(currentTime);
             }
+            updateSlider();
         }
 
         if (Input.GetKeyDown(KeyCode.Space)) {
@@ -138,7 +131,6 @@ public class PedestrianMover : MonoBehaviour {
 
     private void dragSlider() {
         currentTime = slider.value * maxTime;
-        currentRealTime = slider.value * maxTime;
         startTime.text = currentTime.ToString("0.##");
         if (initialized) {
             foreach (Transform ped in peds.transform) {
@@ -155,12 +147,10 @@ public class PedestrianMover : MonoBehaviour {
 
     public void changeSpeed(BaseEventData ev) {
         speedFactor = playbackSpeed.value;
-        currentRealTime = currentTime;
     }
 
     private void changeSpeed() {
         speedFactor = playbackSpeed.value;
-        currentRealTime = currentTime;
     }
 
     public void resetSpeed() {
