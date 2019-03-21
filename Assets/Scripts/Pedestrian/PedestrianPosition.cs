@@ -10,21 +10,21 @@
 using System;
 
 public class PedestrianPosition {
-	private int id;
-	private decimal time;
+	private int flooID;
+	private float time;
 	private float x;
 	private float y;
     private float z;
-	public PedestrianPosition (int id, decimal time, float x, float y, float z) {
-		this.id = id;
+	public PedestrianPosition (int id, float time, float x, float y, float z) {
+		this.flooID = id;
 		this.time = time;
 		this.x = x;
 		this.y = y;
         this.z = z;
 	}
 
-	public int getID() {return this.id;}
-	public decimal getTime() {return this.time;}
+	public int getFloorID() {return this.flooID;}
+	public float getTime() {return this.time;}
 	public float getX() {return this.x;}
 	public float getY() {return this.y;}
     public float getZ() {return this.z;}

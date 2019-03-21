@@ -41,5 +41,13 @@ public class CityThemingMode : ThemingMode {
 		return new Vector2 (0.5f, 1 / y);
 	}
 
-	#endregion
+    public override Material getElevatorMaterial() {
+        return null;
+    }
+
+    public override Material getEscalatorTreadMaterial() {
+        throw new System.NotImplementedException();
+    }
+
+    #endregion
 }

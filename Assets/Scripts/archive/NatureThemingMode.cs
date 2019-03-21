@@ -41,5 +41,13 @@ public class NatureThemingMode : ThemingMode {
 		return new Vector2 (0.5f, 1 / y);
 	}
 
-	#endregion
+    public override Material getElevatorMaterial() {
+        return (Material)Resources.Load("Woodbox", typeof(Material));
+    }
+
+    public override Material getEscalatorTreadMaterial() {
+        throw new System.NotImplementedException();
+    }
+
+    #endregion
 }

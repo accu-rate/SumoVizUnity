@@ -4,21 +4,16 @@ using System.Collections.Generic;
 
 public class ObstacleExtrudeGeometry : ExtrudeGeometry  { // walls
 
-	public static void create (string name, List<Vector2> verticesList, float height, float elevation) {
 
-		GeometryLoader gl = GameObject.Find("GeometryLoader").GetComponent<GeometryLoader>();
-		Material topMaterial;
-		Material sideMaterial;
-
+	public static GameObject create (string name, List<Vector2> verticesList, float height, float elevation, 
+        GameObject parent, Material topMaterial, Material sideMaterial, GameObject obstaclePrefab) {
 		/*if (name.Contains ("_house")) {
 			topMaterial = gl.theme.getRoofMaterial ();
 			sideMaterial = gl.theme.getHouseMaterial ();
 			sideMaterial.SetTextureScale ("_MainTex", gl.theme.getTextureScaleForHeight (4f));
 			height = 6f;
 		} else {*/
-			topMaterial = gl.theme.getWallMaterial();
-			sideMaterial = topMaterial;
-			height = 1f;//2.2f + Random.value * 1.2f;
+//			height = 1f;//2.2f + Random.value * 1.2f;
 		//}
 
 		if(verticesList[verticesList.Count - 1] == verticesList[0])
@@ -56,7 +51,7 @@ public class ObstacleExtrudeGeometry : ExtrudeGeometry  { // walls
             verticesList.Reverse();
         }
 
-        ExtrudeGeometry.create (name, verticesList, height, elevation, topMaterial, sideMaterial);
+      return create (name, verticesList, height, elevation, topMaterial, sideMaterial, parent, obstaclePrefab);
 	}
 
     private static double getEdgeValue(List<Vector2> verticesList, int thisIdx, int nextIdx) {

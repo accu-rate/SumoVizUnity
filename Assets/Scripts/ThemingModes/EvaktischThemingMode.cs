@@ -16,7 +16,12 @@ public class EvaktischThemingMode : ThemingMode {
 		return (Material) Resources.Load("evaktisch/Wand2", typeof(Material));
 	}
 
-	public override Material getBoxMaterial () {
+    public override Material getElevatorMaterial() {
+        return (Material)Resources.Load("SolidColorMaterials/Gelb", typeof(Material));
+    }
+
+
+    public override Material getBoxMaterial () {
 		return null;
 	}
 
@@ -32,5 +37,9 @@ public class EvaktischThemingMode : ThemingMode {
 		return new Vector2();
 	}
 
-	#endregion
+    public override Material getEscalatorTreadMaterial() {
+        throw new System.NotImplementedException();
+    }
+
+    #endregion
 }

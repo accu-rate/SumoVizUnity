@@ -12,8 +12,11 @@ public abstract class ThemingMode : Object {
 	public abstract string getTerrainName();
 	public abstract Material getOpenWallMaterial();
 	public abstract Material getWallMaterial();
-	public abstract Material getBoxMaterial();
+    public abstract Material getElevatorMaterial();
+    public abstract Material getBoxMaterial();
 	public abstract Material getHouseMaterial();
 	public abstract Material getRoofMaterial();
-	public abstract Vector2 getTextureScaleForHeight (float height);
+    public abstract Material getEscalatorTreadMaterial();
+
+    public abstract Vector2 getTextureScaleForHeight (float height);
 }

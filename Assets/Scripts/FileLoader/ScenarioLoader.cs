@@ -4,19 +4,31 @@ using System;
 using System.IO;
 using System.Xml;
 
-public class ScenarioLoader {
+public class ScenarioLoader : MonoBehaviour {
 
     private XmlDocument xmlDoc = new XmlDocument();
-    private SimData simData = new SimData();
+    private SimData simData;
+    private List<String> floorIDs;
+    private List<Floor> floors;
+    private Dictionary<string, XmlElement> floorPropsEntries;
+    private Dictionary<string, XmlElement> wunderZoneIdToMorphosisEntry;
+    private List<Elevator> elevators;
 
-    public ScenarioLoader() {}
 
-    public void loadScenario(string crowditFilePath, string resFolderPath) {
+    // TODO: legacy
+    public void loadScenario(string crowditFilePath, string resFolderPath, GeometryLoader gl) {
+        getScenario(crowditFilePath, resFolderPath, gl);
+    }
+
+    public SimData getScenario(string crowditFilePath, string resFolderPath, GeometryLoader gl) {
+
+        // initialize all variables (could be that they are still set from a former scenario)
+        init();
 
         xmlDoc.LoadXml(utils.loadFileIntoEditor(crowditFilePath));
 
         // store morphosis entries
-        Dictionary<string, XmlElement> wunderZoneIdToMorphosisEntry = new Dictionary<string, XmlElement>();
+
         XmlNode morphosis = xmlDoc.SelectSingleNode("//morphosis");
         foreach (XmlElement morphosisEntry in morphosis) {
             string wunderZoneId = morphosisEntry.GetAttribute("wunderZone");
@@ -24,7 +36,6 @@ public class ScenarioLoader {
         }
 
         // store floorProps entries
-        Dictionary<string, XmlElement> floorPropsEntries = new Dictionary<string, XmlElement>();
         XmlNode floorProps = xmlDoc.SelectSingleNode("//floorProps");
         foreach (XmlElement floorPropEl in floorProps) {
             string floorId = floorPropEl.GetAttribute("floor");
@@ -33,6 +44,61 @@ public class ScenarioLoader {
 
         // extract paths to .floor files and parse their content
         XmlNode spatial = xmlDoc.SelectSingleNode("//spatial");
+
+        // first, create floors
+        parseFloors(spatial, resFolderPath);
+
+        // now, populate floors
+        populateFloors(spatial, resFolderPath);
+
+        // create elevator elements
+        createElevators(xmlDoc);
+
+        // create game objects for each floor
+        foreach (Floor floor in floors) {
+            // create 3D objects
+            floor.setBoundingPoints(getBoundingPoints());
+            floor.createObjects(simData, gl);
+        }
+
+        // for camera position
+        simData.setBounds();
+
+        return simData;
+    }
+
+    internal void init() {
+        floors = new List<Floor>();
+        floorPropsEntries = new Dictionary<string, XmlElement>();
+        wunderZoneIdToMorphosisEntry = new Dictionary<string, XmlElement>();
+        elevators = new List<Elevator>();
+        xmlDoc = new XmlDocument();
+        simData = new SimData();
+        floorIDs = new List<String>();
+    }
+
+    internal Floor getFloor(string floorName) {
+        return simData.getFloor(floorName);
+    }
+
+    private void createElevators(XmlDocument xmlDoc) {
+        XmlNode elevatorMatrices = xmlDoc.SelectSingleNode("//elevatorMatrices");
+        if (elevatorMatrices != null) {
+            foreach (XmlElement elevatorMatrix in elevatorMatrices) {
+                foreach (Elevator elev in elevators) {
+                    string elevatorID = elevatorMatrix.GetAttribute("ref");
+                    if (elevatorID.Equals(elev.getId())) {
+                        string[] floorIDs = elevatorMatrix.GetAttribute("floors").Split(',');
+                        foreach (String floorID in floorIDs) {
+                            elev.addFloor(getFloor(floorID));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void populateFloors(XmlNode spatial, string resFolderPath) {
         int level = 0;
         foreach (XmlElement floorEl in spatial.SelectNodes("floor")) {
             string floorId = floorEl.GetAttribute("id");
@@ -40,7 +106,8 @@ public class ScenarioLoader {
             XmlDocument floorXmlDoc = new XmlDocument();
             floorXmlDoc.LoadXml(utils.loadFileIntoEditor(floorAtFullPath));
 
-            Floor floor = new Floor(floorId, simData);
+            Floor floor = floors[level++];
+
             resetFloorBoundingValues();
 
             XmlNode root = floorXmlDoc.SelectSingleNode("//floor");
@@ -53,38 +120,38 @@ public class ScenarioLoader {
                     }
                     XmlElement morphosisEntry = wunderZoneIdToMorphosisEntry[wunderZoneId];
                     WunderZone actualization = null;
-
                     switch (morphosisEntry.Name) {
-                        case "destination":
-                            actualization = new Destination();
-                            break;
-                        case "directedScaledArea":
-                            actualization = new DirectedScaledArea();
-                            break;
+                    //    case "destination":
+                    //        actualization = new Destination();
+                    //        break;
+                    //    case "directedScaledArea":
+                    //        actualization = new DirectedScaledArea();
+                    //        break;
                         case "elevator":
                             actualization = new Elevator();
+                            elevators.Add((Elevator)actualization);
                             break;
                         case "escalator":
                             actualization = new Escalator();
                             break;
-                        case "origin":
-                            actualization = new Origin();
-                             break;
-                        case "portal":
-                            actualization = new Portal();
-                            break;
-                        case "queueingArea":
-                            actualization = new QueueingArea();
-                            break;
-                        case "scaledArea":
-                            actualization = new ScaledArea();
-                            break;
+                        //case "origin":
+                        //    actualization = new Origin();
+                        //    break;
+                        //case "portal":
+                        //    actualization = new Portal();
+                        //    break;
+                        //case "queueingArea":
+                        //    actualization = new QueueingArea();
+                        //    break;
+                        //case "scaledArea":
+                        //    actualization = new ScaledArea();
+                        //    break;
                         case "stair":
                             actualization = new Stair();
                             break;
-                        case "waitingZone":
-                            actualization = new WaitingZone();
-                            break;
+                        //case "waitingZone":
+                        //    actualization = new WaitingZone();
+                        //    break;
                         default:
                             Debug.LogWarning("Scenario parser: unknown geometry element type " + morphosisEntry.Name);
                             break;
@@ -93,7 +160,6 @@ public class ScenarioLoader {
                     if (actualization == null) {
                         continue;
                     }
-
                     actualization.setFloor(floor);
                     actualization.setId(morphosisEntry.GetAttribute("id"));
                     actualization.setLayerId(layerEl.GetAttribute("id"));
@@ -104,6 +170,8 @@ public class ScenarioLoader {
                     floor.addWunderZone(actualization);
                     simData.addWunderZoneToMap(wunderZoneId, actualization);
                 }
+
+
                 // WALLS
                 foreach (XmlElement wallEl in layerEl.SelectNodes("wall")) {
                     Wall wall = null;
@@ -121,16 +189,32 @@ public class ScenarioLoader {
                 }
             }
 
-            float elevation = float.Parse(floorPropsEntries[floorId].GetAttribute("elevation"));
-            float height = float.Parse(floorPropsEntries[floorId].GetAttribute("height"));
-            floor.setMetaData(level++, height, elevation, getBoundingPoints());
 
-            // create 3D objects
-            floor.createObjects();
-
-            simData.addFloor(floor);
-            //simData.printFloors();
         }
+    }
+
+    private void parseFloors(XmlNode spatial, string resFolderPath) {
+        int level = 0;
+        foreach (XmlElement floorEl in spatial.SelectNodes("floor")) {
+            string floorId = floorEl.GetAttribute("id");
+            Floor floor = new Floor(floorId);
+            float elevation;
+            float height;
+            if (!float.TryParse(floorPropsEntries[floorId].GetAttribute("elevation"), out elevation)) {
+                 elevation = 2.0f;
+            }
+            if (!float.TryParse(floorPropsEntries[floorId].GetAttribute("height"), out height)) {
+                height = 3f;
+            }
+            floor.setMetaData(level++, height, elevation);
+            simData.addFloor(floor);
+            floorIDs.Add(floorId);
+            floors.Add(floor);
+        }
+    }
+
+    internal SimData getSimData() {
+        return simData;
     }
 
     float minX, maxX, minY, maxY;
@@ -177,60 +261,5 @@ public class ScenarioLoader {
 			}
 		}
 		return relativeTrajFilePath;
-	}
-		
-	public void loadScenarioOld() {
-		XmlNode spatial = xmlDoc.SelectSingleNode("//spatial");
-		foreach(XmlElement floor in spatial.SelectNodes("floor")) { // TODO: more floors
-			float height = 1f; // used 2.4 in disco scene
-			foreach (XmlElement collection in floor.SelectNodes("collection")) { // that's the new element in the XML format, added by DrGeli
-				foreach (XmlElement geomObj in collection.SelectNodes("object")) {
-					string name = collection.GetAttribute ("id") + "-" + geomObj.GetAttribute ("name");
-					switch (geomObj.GetAttribute("type")) {
-						case "openWall":
-							WallExtrudeGeometry.create(name, parsePoints(geomObj), height, -0.2f);
-							break;
-						case "wall":
-							ObstacleExtrudeGeometry.create(name, parsePoints(geomObj), height);
-							break;
-						case "origin":
-							AreaGeometry.createOriginTarget (name, parsePoints (geomObj), new Color (0.61f, 0.04f, 0, .3f));
-							break;
-						case "destination":
-							AreaGeometry.createOriginTarget (name, parsePoints (geomObj), new Color (0.18f, 0.71f, 0, .3f));
-							break;
-						case "scaledArea":
-							AreaGeometry.createOriginTarget(name, parsePoints(geomObj), new Color (0.43f, 0.98f, 0.39f, .3f));
-							break;
-						case "waitingZone":
-							AreaGeometry.createOriginTarget(name, parsePoints(geomObj), new Color (0.39f, 0.24f, 0, .3f));
-							break;
-						case "portal":
-						case "beamExit":
-						case "eofWall":
-						case "queuingArea":
-							AreaGeometry.createOriginTarget(name, parsePoints(geomObj));
-							break;
-						default:
-							Debug.Log("Warning: XML geometry parser: Don't know how to parse Object of type '" + geomObj.GetAttribute("type") + "'.");
-							break;
-					}
-				}
-			}
-		}
-
-		Debug.Log ("minX: " + minX);
-		Debug.Log ("maxX: " + maxX);
-		Debug.Log ("minY: " + minY);
-		Debug.Log ("maxY: " + maxY);
-	}
-
-	static string listToString(List<Vector2> list) {
-		string str = "";
-		foreach (Vector2 v in list) {
-			str += "x:" + v.x + "/y:" + v.y + "_";
-		}
-		return str;
-	}
-	*/
+	}*/
 }

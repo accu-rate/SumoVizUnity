@@ -37,14 +37,42 @@ public class ExtendedFlycam : MonoBehaviour {
 	
 	private float rotationX = 0.0f;
 	private float rotationY = 0.0f;
-	
-	void Start () {
-		//Cursor.lockState = CursorLockMode.Locked;
-		//Cursor.visible = false;
-	}
-	
+    public Transform target;
+    public float distance = 5.0f;
+    public float xSpeed = 120.0f;
+    public float ySpeed = 120.0f;
+
+    public float yMinLimit = -20f;
+    public float yMaxLimit = 80f;
+
+    public float distanceMin = .5f;
+    public float distanceMax = 15f;
+
+    private Rigidbody rigidbody;
+
+    float x = 0.0f;
+    float y = 0.0f;
+
+
+    // Use this for initialization
+    void Start() {
+        Vector3 angles = transform.eulerAngles;
+        x = angles.y;
+        y = angles.x;
+
+        rigidbody = GetComponent<Rigidbody>();
+
+        // Make the rigid body not change rotation
+        if (rigidbody != null)
+        {
+            rigidbody.freezeRotation = true;
+        }
+
+    }
+
 	void Update () {
-		rotationX += Input.GetAxis("Mouse X") * cameraSensitivity * Time.deltaTime;
+ 
+        rotationX += Input.GetAxis("Mouse X") * cameraSensitivity * Time.deltaTime;
 		rotationY += Input.GetAxis("Mouse Y") * cameraSensitivity * Time.deltaTime;
 		rotationY = Mathf.Clamp (rotationY, -90, 90);
 
@@ -74,8 +102,10 @@ public class ExtendedFlycam : MonoBehaviour {
 			Cursor.visible = (Cursor.visible == false) ? true : false;
 		}
 
-
-		//if (transform.localPosition.y < 0)
-			//transform.localPosition = new Vector3 (transform.localPosition.x,0.3f,transform.localPosition.z);
-	}
+        // set light always at the same position as camera
+        GameObject.Find("LightSource").transform.position = transform.position;
+        GameObject.Find("LightSource").transform.rotation = transform.rotation;
+       //if (transform.localPosition.y < 0)
+        //transform.localPosition = new Vector3 (transform.localPosition.x,0.3f,transform.localPosition.z);
+    }
 }

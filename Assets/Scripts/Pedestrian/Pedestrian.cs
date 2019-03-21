@@ -1,72 +1,64 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using Vectrosity;
+using System;
+using Random = UnityEngine.Random;
+using System.Linq;
 
 public class Pedestrian : MonoBehaviour {
 	
 	Vector3 start;
 	Vector3 target;
-	//float movement_time_total;
-	//float movement_time_elapsed;
 	private float speed;
-	//int densityReload;
-	//int densityReloadInterval = 10;
 
-	//int id;
-	private List<PedestrianPosition> positions = new List<PedestrianPosition> ();
-	private Color myColor;
-	//bool trajectoryVisible;
-	//VectorLine trajectory;
-
-	//private InfoText it;
-	//private PedestrianLoader pl;
-	private PlaybackControl pc;
-	private Renderer r;
-	//private GeometryLoader gl;
-	//private Groundplane gp;
-	//GameObject tile;
+    private List<PedestrianPosition> positions = new List<PedestrianPosition>();
+    private Color myColor;
+    private PlaybackControl pc;
 
 	private AgentView agentView = null;
 	#pragma warning disable 108
 	private Animation animation;
 	#pragma warning restore 108
 	private LODGroup lodGroup;
-	private int index;
 	private bool targetReached = true;
 
+    // deprecated variables
+    //bool trajectoryVisible;
+    //VectorLine trajectory;
+    //int id;
+    //private InfoText it;
+    //private PedestrianLoader pl;
+    //private Renderer r;
+    //private GeometryLoader gl;
+    //private Groundplane gp;
+    //GameObject tile;
 
-	void Start () {
-		gameObject.AddComponent<BoxCollider>(); // TODO what for?
-		transform.Rotate (0, 90, 0);
-		myColor = new Color (Random.value, Random.value, Random.value);
-		//GetComponentInChildren<Renderer>().materials[1].color = myColor;
-		//addTile ();
-		//it = GameObject.Find ("InfoText").GetComponent<InfoText> ();
-		//pl = GameObject.Find ("PedestrianLoader").GetComponent<PedestrianLoader> ();
-		pc = GameObject.Find ("PlaybackControl").GetComponent<PlaybackControl> ();
 
-		animation = GetComponentInChildren<Animation> ();
-		lodGroup = GetComponentInChildren<LODGroup> ();
+    public void init() {
+        gameObject.SetActive(true);
 
-		if (lodGroup == null) { // "Pedestrian" model
-			r = GetComponentInChildren<Renderer>() as Renderer;
-			r.materials [1].color = myColor;
-		} else { // "LOD_Ped" model
-			Transform PedModelsTransform = transform.GetChild (0).transform;
-			PedModelsTransform.GetChild (0).GetComponent<Renderer> ().materials [1].color = myColor;
-			PedModelsTransform.GetChild (1).GetComponent<Renderer> ().materials [1].color = myColor;
-		}
+        // this is the pullover;-)
+        gameObject.GetComponentInChildren <SkinnedMeshRenderer>().materials[1].color = new Color(Random.value, Random.value, Random.value);
 
-		//gl = GameObject.Find ("GeometryLoader").GetComponent<GeometryLoader> ();
-		//gp = gl.groundplane;
+        animation = GetComponentInChildren<Animation> ();
+        animation.Stop();
 
-		AgentView agentViewComponent = GameObject.Find("CameraMode").GetComponent<AgentView>();
+        lodGroup = GetComponentInChildren<LODGroup>();
+
+        AgentView agentViewComponent = GameObject.Find("CameraMode").GetComponent<AgentView>();
 		if (agentViewComponent.enabled)
 			agentView = agentViewComponent;
 
-		resetPedestrian ();
+		reset();
 	}
+
+    public void init(int id, PedestrianPosition pos) {
+        this.name = "Pedestrian_" + id;
+        positions.Add(pos);
+    }
+
+    internal int getCurrentFloorID(float currentTime) {
+        return GetClosestPosition(currentTime).getFloorID();
+    }
 
     internal void dev() {
         foreach (PedestrianPosition pos in positions) {
@@ -78,30 +70,29 @@ public class Pedestrian : MonoBehaviour {
 		return positions.Count;
 	}
 
-	public void init(int id, PedestrianPosition pos) {
-		this.name = "Pedestrian_" + id;
-        addOrderedPos(pos);
+    public void addPos(PedestrianPosition pos) {
+        PedestrianPosition ceil = positions.FirstOrDefault(i => i.getTime() > pos.getTime());
+        PedestrianPosition floor = positions.LastOrDefault(i => i.getTime() < pos.getTime());
+        if (ceil != null)
+            positions.Insert(positions.IndexOf(ceil), pos);
+        else if (floor != null)
+            positions.Insert(positions.IndexOf(floor) + 1, pos);
+        else
+            positions.Insert(0, pos);
     }
 
-	public void addPos(PedestrianPosition pos) {
-		//if(!positions[positions.Count - 1].equals(pos)) // add only if pos is different to the previously added one
-		addOrderedPos(pos);
+    internal void pause(Boolean playing) {
+        if (playing)
+            animation.Play();
+        else
+            animation.Stop();
     }
 
-    private void addOrderedPos(PedestrianPosition pos) {
-        if (positions.Count == 0) {
-            positions.Add(pos);
-            return;
-        }
-        int i = 0;
-        while (i < positions.Count && positions[i].getTime() < pos.getTime()) {
-            i += 1;
-        }
-        positions.Insert(i, pos);
-
+    internal bool reachedTarget() {
+        return targetReached;
     }
 
-	/*
+    /*
 	void OnMouseDown(){
 		if (Cursor.lockState != CursorLockMode.None && !trajectoryVisible && !pc.drawLine && hideFlags!=HideFlags.HideInHierarchy) {
 			showTrajectory();
@@ -158,19 +149,14 @@ public class Pedestrian : MonoBehaviour {
 	}
 	*/
 
-	public void resetPedestrian() {
-		index = 0;
-		rendererEnabled (true);
-		targetReached = false;
-		PedestrianPosition pos = positions[0];
+    public void reset() {
+        animation.Stop();
+        targetReached = false;
+        PedestrianPosition pos = positions[0];
 		transform.position = new Vector3 (pos.getX (), pos.getZ(), pos.getY ());
 	}
 
 	private void rendererEnabled(bool truefalse) {
-		if (lodGroup == null)
-			r.enabled = truefalse;
-		else
-			lodGroup.enabled = truefalse;
 		if (truefalse)
 			animation.Play ();
 	}
@@ -181,59 +167,48 @@ public class Pedestrian : MonoBehaviour {
 		return true;
 	}
 
-	void Update () {
-		if (!targetReached) {
-			if (showPed ())
-				rendererEnabled (true);
-			else
-				rendererEnabled (false);
+    private PedestrianPosition GetClosestPosition(float currentTime) {
+        return positions.LastOrDefault(i => i.getTime() < currentTime);
+     }
 
-			/*
-			updateCalls ++;
-			float dist = Vector3.Distance (gameObject.transform.position, Camera.main.transform.position);
+    public void move (float currentTime) {
+        PedestrianPosition pos = GetClosestPosition(currentTime);
 
-			[...]
+        if (pos == null || positions.IndexOf(pos) >= positions.Count - 2) { // = target reached
+            foreach (Renderer r in this.GetComponentsInChildren<Renderer>()) {
+                r.enabled = false;
+            }
+            animation.Stop();
+            targetReached = true;
+            return;
+        } else {
+            targetReached = false;
+        }
 
-			if (r.enabled) // pc.playing &&
-				animation.Play ();
-			else
-				animation.Stop ();
+        if (!targetReached) {
+            if (!showPed())
+                animation.Stop();
+            else
+                animation.Play();
 
-			int index = _getTrait(positions, pc.current_time);
 
-			if (pc.current_time > positions [index + 1].getTime ()
-			    && index != positions.Count - 2) {
-				index += 1;
-			}
-			if (index < positions.Count - 2 && pc.current_time > positions[index + 1].getTime()) {
-				index += 1;
-			}
-			if (index < positions.Count - 1) {
-			*/
-
-			while (index <= positions.Count - 2 && pc.current_time >= positions [index + 1].getTime ()) // && index < positions.Count - 2
-			index += 1;
-
-			PedestrianPosition pos = (PedestrianPosition)positions [index];
-			PedestrianPosition pos2 = (PedestrianPosition)positions [index + 1];
-			start = new Vector3 (pos.getX (), pos.getZ(), pos.getY ()); // the y-coord in Unity is the z-coord from the kernel: the up and down direction
+            PedestrianPosition pos2 = positions[positions.IndexOf(pos)+1];
+  			start = new Vector3 (pos.getX (), pos.getZ(), pos.getY ()); // the y-coord in Unity is the z-coord from the kernel: the up and down direction
+            // it is on purpose that the y position stays the same as position to avoid kippen of peds
 			target = new Vector3 (pos2.getX (), pos2.getZ(), pos2.getY ());
-			float time = (float)pc.current_time;
-			float timeStepLength = Mathf.Clamp ((float)pos2.getTime () - (float)pos.getTime (), 0.1f, 50f); // We don't want to divide by zero. OTOH, this results in pedestrians never standing still.
-			float movement_percentage = ((float)time - (float)pos.getTime ()) / timeStepLength;
-			Vector3 newPosition = Vector3.Lerp (start, target, movement_percentage);
+            Vector3 targetForLook = new Vector3(pos2.getX(), pos.getZ(), pos2.getY());
+            float time = currentTime;
+			float timeStepLength = Mathf.Clamp (pos2.getTime () - pos.getTime (), 0.1f, 50f); // We don't want to divide by zero. OTOH, this results in pedestrians never standing still.
+			float movement_percentage = (time - pos.getTime ()) / timeStepLength;
+
+            Vector3 newPosition = Vector3.Lerp (start, target, movement_percentage);
 			Vector3 relativePos = target - start;
 			speed = relativePos.magnitude;
 			animation ["walking"].speed = speed / timeStepLength;
-			if (start != target)
-				transform.rotation = Quaternion.LookRotation (relativePos);
+            // TODO: not needed for cylinders
+            if (start != targetForLook)
+              transform.rotation = Quaternion.LookRotation (targetForLook - start);
 			transform.position = newPosition;
-
-			if (index >= positions.Count - 2) { // = target reached
-				rendererEnabled (false);
-				animation.Stop ();
-				targetReached = true;
-			}
 		}
 				/*
 				//check if line is crossed

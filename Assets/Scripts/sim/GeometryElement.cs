@@ -29,6 +29,12 @@ public class GeometryElement {
         this.layerId = layerId;
     }
 
-    public virtual void createObject() {}
+    // for plane objects like origins, destinations, waiting zones
+    public virtual void createObject(GameObject floor) {}
 
+    // for  walls, obstacles
+    public virtual void createObject(GameObject floor, GeometryLoader gl) {}
+
+    // for elevators, escalators and stairs
+    public virtual void createObject(GameObject floor, SimData simData, GeometryLoader gl) {}
 }

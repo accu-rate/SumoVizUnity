@@ -1,17 +1,29 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class GeometryLoader : MonoBehaviour {
 
-	[HideInInspector]
-	public List<Geometry> geometry;
-	[HideInInspector]
-	public ThemingMode theme;
+    // set via Inspector
+    [SerializeField] GameObject obstaclePrefab;
+    [SerializeField] GameObject treadPrefab;
+
+    [HideInInspector]
+	private ThemingMode theme;
 	[HideInInspector]
 	public Groundplane groundplane;
 
-	public void setTheme(ThemingMode mode) {
+    internal GameObject getObstaclePrefab() {
+        return obstaclePrefab;
+    }
+
+    internal GameObject getTreadPrefab() {
+        return treadPrefab;
+
+    }
+
+    public void setTheme(ThemingMode mode) {
 		this.theme = mode;
 		GameObject terrain = theme.getTerrain ();
 		groundplane = terrain.GetComponent<Groundplane> ();
@@ -22,7 +34,7 @@ public class GeometryLoader : MonoBehaviour {
 		obj.transform.SetParent (GameObject.Find ("World").transform);
 	}
 
-	public void addObject(Geometry obj) {
-		geometry.Add(obj);
-	}
+    internal ThemingMode getTheme() {
+        return theme;
+    }
 }

@@ -3,7 +3,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using System.IO;
 
-public class ScenarioImporter {
+public class ScenarioImporter : MonoBehaviour {
 
 	[MenuItem("Assets/Import crowd:it project")]
 	
@@ -27,13 +27,13 @@ public class ScenarioImporter {
 			new GameObject("World");
 
 			RuntimeInitializer ri = GameObject.Find("RuntimeInitializer").GetComponent<RuntimeInitializer>();
-			ri.geometryLoader = GameObject.Find("GeometryLoader").GetComponent<GeometryLoader>();
-			ri.geometryLoader.setTheme (new MarketplaceThemingMode ()); // EvaktischThemingMode ());
+			//ri.geometryLoader = GameObject.Find("GeometryLoader").GetComponent<GeometryLoader>();
+			//ri.geometryLoader.setTheme (new MarketplaceThemingMode ()); // EvaktischThemingMode ());
 
             string resFolderPath = Path.Combine(Path.GetDirectoryName(crowditFilePath), Path.GetFileNameWithoutExtension(crowditFilePath)) + "_res";
 
             ScenarioLoader sl = new ScenarioLoader ();
-            sl.loadScenario (crowditFilePath, resFolderPath);
+            sl.loadScenario (crowditFilePath, resFolderPath, ri.geometryLoader);
 
 			//ri.boundingPoints = sl.getBoundingPoints (); // if needed again, like in the camera tour for instance, re-create this list. currently only each floor knows their bounding points
             ri.setCrowditFileAndResFolder(crowditFilePath, resFolderPath);
