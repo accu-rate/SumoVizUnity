@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
-
+using System.Globalization;
 
 public class CameraTour : MonoBehaviour {
 
@@ -124,17 +124,17 @@ public class CameraTour : MonoBehaviour {
 						string[] values = line.Split(',');
 						float x, y, z, velocReducer, waitingTime;
 
-						float.TryParse(values[0].Trim(), out x);
-						float.TryParse(values[1].Trim(), out y);
-						float.TryParse(values[2].Trim(), out z);
-						float.TryParse(values[3].Trim(), out velocReducer);
-						float.TryParse(values[4].Trim(), out waitingTime);
+						float.TryParse(values[0].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out x);
+						float.TryParse(values[1].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out y);
+						float.TryParse(values[2].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out z);
+						float.TryParse(values[3].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out velocReducer);
+						float.TryParse(values[4].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out waitingTime);
 
 						Vector3 point = new Vector3 (x, y, z);
 
-						float.TryParse (values[5].Trim(), out x);
-						float.TryParse (values[6].Trim(), out y);
-						float.TryParse (values[7].Trim(), out z);
+						float.TryParse (values[5].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out x);
+						float.TryParse (values[6].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out y);
+						float.TryParse (values[7].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out z);
 
 						waypoints.Add (new Waypoint (waypoints.Count, point , velocReducer, waitingTime, new Vector3 (x, y, z)));
 					}

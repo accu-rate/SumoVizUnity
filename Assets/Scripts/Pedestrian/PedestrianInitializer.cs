@@ -4,6 +4,8 @@ using System.IO.Compression;
 using System.Xml;
 using System.Collections.Generic;
 using System;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 public class PedestrianInitializer : MonoBehaviour {
 
@@ -34,8 +36,14 @@ public class PedestrianInitializer : MonoBehaviour {
         foreach (XmlElement floorCsvAtEl in output.SelectNodes("floor")) {
             string trajFile = floorCsvAtEl.GetAttribute("csvAt");
             string trajFilePath = Path.Combine(outFolder, trajFile);
-            string floorName = trajFile.Replace("floor-", "");
-            floorName = floorName.Substring(0, floorName.IndexOf("."));
+            var regex = new Regex(Regex.Escape("floor-"));
+            string floorName = regex.Replace(trajFile, "", 1);
+            //            string floorName = trajFile.Replace("floor-", "");
+            regex = new Regex(Regex.Escape(".csv"));
+            floorName = regex.Replace(floorName, "", 1);
+            regex = new Regex(Regex.Escape(".gz"));
+            floorName = regex.Replace(floorName, "", 1);
+//            floorName.Substring(0, floorName.LastIndexOf("."));
             Floor floor = simData.getFloor(floorName);
 
             StreamReader reader;
@@ -72,13 +80,13 @@ public class PedestrianInitializer : MonoBehaviour {
                 float time;
                 int id;
                 float x, y, z;
-                float.TryParse(values[0], out time);
-                int.TryParse(values[1], out id);
-                float.TryParse(values[2], out x);
-                float.TryParse(values[3], out y);
+                float.TryParse(values[0], NumberStyles.Any, CultureInfo.InvariantCulture, out time);
+                int.TryParse(values[1], NumberStyles.Any, CultureInfo.InvariantCulture, out id);
+                float.TryParse(values[2], NumberStyles.Any, CultureInfo.InvariantCulture, out x);
+                float.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out y);
                 // if no z coordinate is given, just take zero as default
                 try {
-                    float.TryParse(values[4], out z);
+                    float.TryParse(values[4], NumberStyles.Any, CultureInfo.InvariantCulture, out z);
                 } catch (IndexOutOfRangeException e) {
                     z = 0.0f;
                 }

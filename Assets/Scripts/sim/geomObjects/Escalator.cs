@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Globalization;
 
 public class Escalator : WunderZone {
 
@@ -7,9 +8,9 @@ public class Escalator : WunderZone {
     {
 
         Vector3 dirVect = new Vector3(
-            float.Parse(morphosisEntry.GetAttribute("dirX")),
-            float.Parse(morphosisEntry.GetAttribute("dirZ")),
-            float.Parse(morphosisEntry.GetAttribute("dirY")));
+            float.Parse(morphosisEntry.GetAttribute("dirX"), NumberStyles.Any, CultureInfo.InvariantCulture),
+            float.Parse(morphosisEntry.GetAttribute("dirZ"), NumberStyles.Any, CultureInfo.InvariantCulture),
+            float.Parse(morphosisEntry.GetAttribute("dirY"), NumberStyles.Any, CultureInfo.InvariantCulture));
         int noOfTreads = int.Parse(morphosisEntry.GetAttribute("noOfTreads"));
         int noOfHorizontalTreads = int.Parse(morphosisEntry.GetAttribute("noOfHorizontalTreads"));
         string againstDirString = morphosisEntry.GetAttribute("transport");

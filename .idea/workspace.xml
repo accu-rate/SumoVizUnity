@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8970d1cf-d8cd-4be1-9c62-a744e7126cea" name="Default Changelist" comment="">
+    <list default="true" id="8970d1cf-d8cd-4be1-9c62-a744e7126cea" name="Default Changelist" comment="renamed scene">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/crowdit.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/crowdit.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/CameraModes/CameraTour/CameraPositionRecorder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/CameraModes/CameraTour/CameraPositionRecorder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/CameraModes/CameraTour/CameraTour.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/CameraModes/CameraTour/CameraTour.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/FileLoader/ScenarioLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/FileLoader/ScenarioLoader.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Pedestrian/PedestrianInitializer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Pedestrian/PedestrianInitializer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/sim/geomObjects/Escalator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/sim/geomObjects/Escalator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/sim/geomObjects/Stair.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/sim/geomObjects/Stair.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -14,9 +22,9 @@
     <session id="-1148773959">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="22" />
+          <entry key="project.closed" value="23" />
           <entry key="project.open.time.0" value="5" />
-          <entry key="project.open.time.1" value="5" />
+          <entry key="project.open.time.1" value="7" />
           <entry key="project.open.time.10" value="1" />
           <entry key="project.open.time.11" value="3" />
           <entry key="project.open.time.12" value="1" />
@@ -26,7 +34,7 @@
           <entry key="project.open.time.28" value="1" />
           <entry key="project.open.time.3" value="1" />
           <entry key="project.open.time.39" value="1" />
-          <entry key="project.opened" value="22" />
+          <entry key="project.opened" value="24" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages">
@@ -42,14 +50,14 @@
           <entry key="floor" value="11" />
           <entry key="gz" value="11" />
           <entry key="log" value="1" />
-          <entry key="meta" value="32" />
+          <entry key="meta" value="33" />
           <entry key="unity" value="2" />
           <entry key="xml" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="PLAIN_TEXT" value="59" />
+          <entry key="PLAIN_TEXT" value="60" />
           <entry key="XML" value="2" />
         </counts>
       </usages-collector>
@@ -90,13 +98,18 @@
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Assets/Prefabs/tread.prefab.meta">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="136">
               <caret line="8" selection-start-line="8" selection-end-line="8" />
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Assets/Floors.meta">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -119,9 +132,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="ProjectPane" />
       <pane id="Scope" />
+      <pane id="ProjectPane" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -313,14 +326,20 @@
       <option name="project" value="LOCAL" />
       <updated>1551203290961</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="renamed scene">
+      <created>1553185031352</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1553185031352</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1176" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3192964" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.32675907" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -371,7 +390,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="renamed scene" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Assets/StreamingAssets/Scenarios/pss-u1u2_res/geometry/Ebene-Z3_20180910095030.floor" />
     <entry file="file://$PROJECT_DIR$/Assets/StreamingAssets/Scenarios/pss-u1u2_res/geometry/Ebene-Z3_20180910095030.floor.meta" />
     <entry file="file://$PROJECT_DIR$/Assets/StreamingAssets/Scenarios/pss-u1u2_res/geometry/Ebene-Z4_20180830094735.floor" />
     <entry file="file://$PROJECT_DIR$/Assets/StreamingAssets/Scenarios/pss-u1u2_res/geometry/Ebene-Z4_20180830094735.floor.meta" />
@@ -435,6 +453,9 @@
           <caret line="8" selection-start-line="8" selection-end-line="8" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Floors.meta">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using System.IO;
 using System.Xml;
+using System.Globalization;
 
 public class ScenarioLoader : MonoBehaviour {
 
@@ -200,10 +201,10 @@ public class ScenarioLoader : MonoBehaviour {
             Floor floor = new Floor(floorId);
             float elevation;
             float height;
-            if (!float.TryParse(floorPropsEntries[floorId].GetAttribute("elevation"), out elevation)) {
+            if (!float.TryParse(floorPropsEntries[floorId].GetAttribute("elevation"), NumberStyles.Any, CultureInfo.InvariantCulture, out elevation)) {
                  elevation = 2.0f;
             }
-            if (!float.TryParse(floorPropsEntries[floorId].GetAttribute("height"), out height)) {
+            if (!float.TryParse(floorPropsEntries[floorId].GetAttribute("height"), NumberStyles.Any, CultureInfo.InvariantCulture, out height)) {
                 height = 3f;
             }
             floor.setMetaData(level++, height, elevation);
@@ -232,7 +233,7 @@ public class ScenarioLoader : MonoBehaviour {
         foreach (XmlElement point in polyPoints.SelectNodes("point")) {
             float x = 0;
             float y = 0;
-            if (float.TryParse(point.GetAttribute("x"), out x) && float.TryParse(point.GetAttribute("y"), out y)) {
+            if (float.TryParse(point.GetAttribute("x"), NumberStyles.Any, CultureInfo.InvariantCulture, out x) && float.TryParse(point.GetAttribute("y"), NumberStyles.Any, CultureInfo.InvariantCulture, out y)) {
                 list.Add(new Vector2(x, y));
             }
             if (x < minX)

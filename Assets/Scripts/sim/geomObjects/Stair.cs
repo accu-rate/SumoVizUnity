@@ -1,13 +1,14 @@
-﻿using UnityEngine;
+﻿using System.Globalization;
+using UnityEngine;
 
 public class Stair : WunderZone {
 
     public override void createObject(GameObject parent, SimData simData, GeometryLoader gl) {
 
         Vector3 dirVect = new Vector3(
-            float.Parse(morphosisEntry.GetAttribute("dirX")),
-            float.Parse(morphosisEntry.GetAttribute("dirZ")),
-            float.Parse(morphosisEntry.GetAttribute("dirY")));
+            float.Parse(morphosisEntry.GetAttribute("dirX"), NumberStyles.Any, CultureInfo.InvariantCulture),
+            float.Parse(morphosisEntry.GetAttribute("dirZ"), NumberStyles.Any, CultureInfo.InvariantCulture),
+            float.Parse(morphosisEntry.GetAttribute("dirY"), NumberStyles.Any, CultureInfo.InvariantCulture));
         int noOfTreads = int.Parse(morphosisEntry.GetAttribute("noOfTreads"));
 
         float height = 0;
