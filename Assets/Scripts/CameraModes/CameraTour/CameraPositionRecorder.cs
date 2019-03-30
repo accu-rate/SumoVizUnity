@@ -107,15 +107,15 @@ public class CameraPositionRecorder : MonoBehaviour {
                 float currentTime;
                 int id;
                 float x, y, z,r, t;
-                float.TryParse(values[0], NumberStyles.Any, CultureInfo.InvariantCulture, out x);
-                float.TryParse(values[1], NumberStyles.Any, CultureInfo.InvariantCulture, out y);
-                float.TryParse(values[2], NumberStyles.Any, CultureInfo.InvariantCulture, out z);
+                float.TryParse(values[0], out x);
+                float.TryParse(values[1],  out y);
+                float.TryParse(values[2],  out z);
                 position = new Vector3(x, y, z);
 
-                float.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out x);
-                float.TryParse(values[4], NumberStyles.Any, CultureInfo.InvariantCulture, out y);
-                float.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out z);
-                float.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out r);
+                float.TryParse(values[3], out x);
+                float.TryParse(values[4],  out y);
+                float.TryParse(values[5],  out z);
+                float.TryParse(values[6],  out r);
                 rotation = new Quaternion(x, y, z, r);
 
                 float.TryParse(values[7], out currentTime);

@@ -17,7 +17,7 @@ public static class Screenrecorder {
 		process = new Process ();
 
         String relativeOutFileLoc = @filename; 
-        String ffmpegCommand = "-y -f image2pipe -i - -vf scale=trunc(iw/2)*2:trunc(ih/2)*2 -r 25 -c:v libx264 -pix_fmt yuv420p -crf 18 " + relativeOutFileLoc;
+        String ffmpegCommand = "-y -f image2pipe -i - -vf scale=trunc(iw/2)*2:trunc(ih/2)*2 -r 25 -c:v libx264 -pix_fmt yuv420p -crf 18 "  + "\"" + relativeOutFileLoc +"\"" ;
 
         // access ffmpeg from crowd:it directory
         String fileName = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + 

@@ -6,9 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Scenes/stair-test.unity
-    guid: d3ff6d728b843f843834b71b2318fab7
-  - enabled: 1
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
     path: Assets/Scenes/crowdit.unity
     guid: 1eb3455846d30d54ea558c14fdf00d38
+  - enabled: 1
+    path: Assets/crowdit-bim.unity
+    guid: 5b8a006e1e67b594182dd663f01e4abf
   m_configObjects: {}

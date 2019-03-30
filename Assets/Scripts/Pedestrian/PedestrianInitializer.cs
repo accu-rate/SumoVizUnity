@@ -38,12 +38,10 @@ public class PedestrianInitializer : MonoBehaviour {
             string trajFilePath = Path.Combine(outFolder, trajFile);
             var regex = new Regex(Regex.Escape("floor-"));
             string floorName = regex.Replace(trajFile, "", 1);
-            //            string floorName = trajFile.Replace("floor-", "");
             regex = new Regex(Regex.Escape(".csv"));
             floorName = regex.Replace(floorName, "", 1);
             regex = new Regex(Regex.Escape(".gz"));
             floorName = regex.Replace(floorName, "", 1);
-//            floorName.Substring(0, floorName.LastIndexOf("."));
             Floor floor = simData.getFloor(floorName);
 
             StreamReader reader;
