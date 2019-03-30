@@ -59,7 +59,7 @@ public class ScenarioLoader : MonoBehaviour {
         foreach (Floor floor in floors) {
             // create 3D objects
             floor.setBoundingPoints(getBoundingPoints());
-            floor.createObjects(simData, gl);
+ //           floor.createObjects(simData, gl);
         }
 
         // for camera position
