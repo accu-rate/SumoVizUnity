@@ -47,3 +47,4 @@ test-results/
 
 # Ignore compiled files
 Builds/
+/Logs
