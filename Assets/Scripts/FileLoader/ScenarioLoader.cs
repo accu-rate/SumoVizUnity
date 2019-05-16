@@ -59,7 +59,7 @@ public class ScenarioLoader : MonoBehaviour {
         foreach (Floor floor in floors) {
             // create 3D objects
             floor.setBoundingPoints(getBoundingPoints());
- //           floor.createObjects(simData, gl);
+            floor.createObjects(simData, gl);
         }
 
         // for camera position
@@ -233,7 +233,8 @@ public class ScenarioLoader : MonoBehaviour {
         foreach (XmlElement point in polyPoints.SelectNodes("point")) {
             float x = 0;
             float y = 0;
-            if (float.TryParse(point.GetAttribute("x"), NumberStyles.Any, CultureInfo.InvariantCulture, out x) && float.TryParse(point.GetAttribute("y"), NumberStyles.Any, CultureInfo.InvariantCulture, out y)) {
+            if (float.TryParse(point.GetAttribute("x"), NumberStyles.Any, CultureInfo.InvariantCulture, out x) && 
+                float.TryParse(point.GetAttribute("y"), NumberStyles.Any, CultureInfo.InvariantCulture, out y)) {
                 list.Add(new Vector2(x, y));
             }
             if (x < minX)

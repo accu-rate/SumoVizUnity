@@ -40,10 +40,11 @@ public class SceneController : MonoBehaviour {
     private SimData simData;
 
     public void Start() {
+
         gl = gameObject.GetComponent<GeometryLoader>();
         pm = gameObject.GetComponent<PedestrianMover>();
-        controlsForLoadedScenario = GameObject.Find("ControlsScenarioLoaded");
-        floorChooserPanel = GameObject.Find("ChooseFloorsDisplay");
+
+         // camera and recording
         camera = GameObject.Find("Flycam").transform;
         cpr = camera.gameObject.GetComponent<CameraPositionRecorder>();
         recordButton = GameObject.Find("Record").GetComponent<Button>() as Button;
@@ -54,10 +55,15 @@ public class SceneController : MonoBehaviour {
             r.enabled = false;
         }
 
+        // add listeners to buttons
         loadScenarioButton.onClick.AddListener(delegate () { this.importCrowditFiles(); });
         resetScenarioButton.onClick.AddListener(delegate () { this.resetScene(); });
         loadPedsButton.onClick.AddListener(delegate () { this.importPeds(); });
         loadPedsButton.gameObject.SetActive(false);
+
+        // load controls
+        controlsForLoadedScenario = GameObject.Find("ControlsScenarioLoaded");
+        floorChooserPanel = GameObject.Find("ChooseFloorsDisplay");
 
         // do not display the play button as long as there are no pedestrians
         controlsForLoadedScenario.SetActive(false);
@@ -76,13 +82,14 @@ public class SceneController : MonoBehaviour {
 
 
     public void importPeds() {
-        // init GUI elements: floors list and play button
+        // import and initialize peds: if no peds available we are fine as well, then no trajectories are loaded
         if (gameObject.GetComponent<PedestrianInitializer>().initializePeds(resFolderPath, simData)) {
-            // do display the play button if there are pedestrians
-            controlsForLoadedScenario.SetActive(true);
-
+            
             // init pedestrian mover
             pm.init(simData);
+ 
+            // do display the play button if there are pedestrians
+            controlsForLoadedScenario.SetActive(true);
         }
     }
 
@@ -96,7 +103,9 @@ public class SceneController : MonoBehaviour {
         string scenariosPath = Application.dataPath + "/StreamingAssets/Scenarios";
 
         if (continueOk) {
-            String[] crowditFilePaths = StandaloneFileBrowser.OpenFilePanel("", scenariosPath, "crowdit;*.crowdit", false); //Path.GetFileName(path))
+
+            String[] crowditFilePaths = StandaloneFileBrowser.OpenFilePanel("", scenariosPath, "crowdit;*.crowdit", false);
+
             if (crowditFilePaths == null) // = cancel was clicked in open file dialog
                 return;
 
@@ -104,16 +113,20 @@ public class SceneController : MonoBehaviour {
             if (crowditFilePath == "") // = cancel was clicked in open file dialog
                 return;
 
+            // create a new world for the geometry and pedestrians
             GameObject world = new GameObject("World");
 
             resFolderPath = Path.Combine(Path.GetDirectoryName(crowditFilePath), Path.GetFileNameWithoutExtension(crowditFilePath)) + "_res";
- 
+
+            // here you can set different mode if you like
             gl.setTheme(new CrowditThemingMode());
+
             sl = new ScenarioLoader();
             simData = sl.getScenario(crowditFilePath, resFolderPath, gl);
 
 
-            // set camera correctly
+            // set camera correctly: looks with a certain offset towards the lowest corner of the scenario.
+            // light as well.
             float offset = 20;
             camera.position = new Vector3(sl.getSimData().minX - offset,
                 sl.getSimData().maxElev,
@@ -124,6 +137,7 @@ public class SceneController : MonoBehaviour {
             GameObject.Find("LightSource").transform.position = camera.position;
 
 
+            // initialize floor toggler
             GetComponent<DisplayFloorToggler>().setToggles(simData);
 
             // display the panel for the floors if no scenario is loaded
