@@ -45,12 +45,22 @@ public class CameraPositionRecorder : MonoBehaviour {
     [SerializeField] Button loadCameraPosition;
     [SerializeField] Button saveCameraPosition;
     [SerializeField] Button resetPositions;
+
+    [SerializeField] GameObject cameraPositionTable;
+    [SerializeField] GameObject columnsPrefab;
+    [SerializeField] GameObject labelPrefab;
+    [SerializeField] GameObject timePrefab;
+
+
     private PedestrianMover pm;
     private GoVals currentPoint;
     private float currentFrame;
 
     private int currentIndex;
     private StreamWriter writer;
+
+    private int noOfCameraPositions = 0;
+    private int yOffset = 20;
 
     //cache of our transform
     Transform tf;
@@ -135,6 +145,20 @@ public class CameraPositionRecorder : MonoBehaviour {
             currentPoint = vals[0];
             currentIndex = 0;
         }
+
+        GameObject newColumn = Instantiate(columnsPrefab);
+        newColumn.transform.SetParent(cameraPositionTable.transform);
+
+        // add table entry
+        newColumn.transform.Find("Label").gameObject.GetComponent<Text>().text = "Position " + noOfCameraPositions;
+//        label.transform.position = new Vector3(label.transform.position.x , label.transform.position.y - yOffset * noOfCameraPositions, label.transform.position.z);
+
+        newColumn.transform.Find("Time").gameObject.GetComponent<Text>().text = pm.getCurrentTime().ToString(); ;
+        //        time.transform.position = new Vector3(time.transform.position.x , time.transform.position.y - yOffset * noOfCameraPositions, time.transform.position.z);
+
+        newColumn.transform.position = new Vector3(columnsPrefab.transform.position.x, columnsPrefab.transform.position.y - yOffset * noOfCameraPositions, columnsPrefab.transform.position.z);
+ 
+        noOfCameraPositions++;
     }
 
     void Update() {
