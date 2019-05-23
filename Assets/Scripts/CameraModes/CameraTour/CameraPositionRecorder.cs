@@ -41,6 +41,7 @@ public class CameraPositionRecorder : MonoBehaviour {
     bool replaying = false;
 
     [SerializeField] Button addCameraPosition;
+    [SerializeField] Button removeCameraPosition;
     [SerializeField] Button replay;
     [SerializeField] Button loadCameraPosition;
     [SerializeField] Button saveCameraPosition;
@@ -48,10 +49,7 @@ public class CameraPositionRecorder : MonoBehaviour {
 
     [SerializeField] GameObject cameraPositionTable;
     [SerializeField] GameObject columnsPrefab;
-    [SerializeField] GameObject labelPrefab;
-    [SerializeField] GameObject timePrefab;
-
-
+ 
     private PedestrianMover pm;
     private GoVals currentPoint;
     private float currentFrame;
@@ -59,8 +57,8 @@ public class CameraPositionRecorder : MonoBehaviour {
     private int currentIndex;
     private StreamWriter writer;
 
-    private int noOfCameraPositions = 0;
-    private int yOffset = 20;
+    private int noOfCameraPositions = 1;
+    private int yOffset = 15;
 
     //cache of our transform
     Transform tf;
@@ -71,12 +69,19 @@ public class CameraPositionRecorder : MonoBehaviour {
         addCameraPosition.onClick.AddListener(delegate () {
             this.addPosition();
         });
+
+        removeCameraPosition.onClick.AddListener(delegate () {
+            this.removePosition();
+        });
+
         replay.onClick.AddListener(delegate () {
             this.replayCamera();
         });
+
         loadCameraPosition.onClick.AddListener(delegate () {
             this.loadCameraPositions();
         });
+
         saveCameraPosition.onClick.AddListener(delegate () {
             this.saveCameraPositions();
         });
@@ -145,25 +150,57 @@ public class CameraPositionRecorder : MonoBehaviour {
             currentPoint = vals[0];
             currentIndex = 0;
         }
-
-        GameObject newColumn = Instantiate(columnsPrefab);
-        newColumn.transform.SetParent(cameraPositionTable.transform);
-
-        // add table entry
-        newColumn.transform.Find("Label").gameObject.GetComponent<Text>().text = "Position " + noOfCameraPositions;
-//        label.transform.position = new Vector3(label.transform.position.x , label.transform.position.y - yOffset * noOfCameraPositions, label.transform.position.z);
-
-        newColumn.transform.Find("Time").gameObject.GetComponent<Text>().text = pm.getCurrentTime().ToString(); ;
-        //        time.transform.position = new Vector3(time.transform.position.x , time.transform.position.y - yOffset * noOfCameraPositions, time.transform.position.z);
-
-        newColumn.transform.position = new Vector3(columnsPrefab.transform.position.x, columnsPrefab.transform.position.y - yOffset * noOfCameraPositions, columnsPrefab.transform.position.z);
- 
-        noOfCameraPositions++;
+        createTableEntry();
     }
 
+
+    private void removePosition() {
+
+        if (vals.Count > 0) { 
+        GoVals lastPosition = vals[vals.Count - 1];
+        vals.Remove(lastPosition);
+    }
+
+        // from: https://forum.unity.com/threads/deleting-all-chidlren-of-an-object.92827/ otherwise only every other object will be deleted
+        var children = new List<GameObject>();
+        foreach (Transform child in cameraPositionTable.transform) children.Add(child.gameObject);
+        children.ForEach(child => Destroy(child));
+
+ 
+        noOfCameraPositions = 1;
+
+
+        foreach (GoVals camerapos in vals) {
+            createTableEntry();
+ 
+        }
+
+    }
+
+
+    private void createTableEntry() {
+
+        GameObject newcolumn = Instantiate(columnsPrefab,
+            new Vector3(columnsPrefab.transform.position.x, columnsPrefab.transform.position.y + yOffset * noOfCameraPositions, columnsPrefab.transform.position.z),
+            Quaternion.identity);
+        newcolumn.transform.SetParent(cameraPositionTable.transform);
+
+        // add table entry
+        newcolumn.transform.Find("Label").gameObject.GetComponent<Text>().text = "Position " + noOfCameraPositions;
+
+        TimeSpan currentTime = TimeSpan.FromSeconds(pm.getCurrentTime());
+        newcolumn.transform.Find("Time").gameObject.GetComponent<Text>().text = currentTime.ToString(@"hh\:mm\:ss");
+
+ 
+        noOfCameraPositions++;
+
+
+
+    }
     void Update() {
         ReplayPoints();
     }
+
 
     void ReplayPoints() {
         if (!replaying || !pm.isPlaying()) return;

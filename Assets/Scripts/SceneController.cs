@@ -14,11 +14,12 @@ public class SceneController : MonoBehaviour {
     // UI elements, set via inspector
     [SerializeField] Button loadScenarioButton;
     [SerializeField] Button resetScenarioButton;
-    [SerializeField] Button loadPedsButton;
+    [SerializeField] GameObject loadPeds;
     [SerializeField] GameObject floorPanel;
 
     private Button recordButton;
     private Button playButton;
+    private Button loadPedsButton;
     private Transform camera;
     private GameObject controlsForLoadedScenario;
     private GameObject floorChooserPanel;
@@ -49,7 +50,8 @@ public class SceneController : MonoBehaviour {
         cpr = camera.gameObject.GetComponent<CameraPositionRecorder>();
         recordButton = GameObject.Find("Record").GetComponent<Button>() as Button;
         playButton = GameObject.Find("Play").GetComponent<Button>() as Button;
-        
+        loadPedsButton = GameObject.Find("Load pedestrians").GetComponent<Button>() as Button;
+
         // do not display the panel for the floors if no scenario is loaded
         foreach (Renderer r in floorPanel.GetComponentsInChildren<Renderer>()) {
             r.enabled = false;
@@ -59,7 +61,7 @@ public class SceneController : MonoBehaviour {
         loadScenarioButton.onClick.AddListener(delegate () { this.importCrowditFiles(); });
         resetScenarioButton.onClick.AddListener(delegate () { this.resetScene(); });
         loadPedsButton.onClick.AddListener(delegate () { this.importPeds(); });
-        loadPedsButton.gameObject.SetActive(false);
+        loadPeds.gameObject.SetActive(false);
 
         // load controls
         controlsForLoadedScenario = GameObject.Find("ControlsScenarioLoaded");
@@ -142,7 +144,7 @@ public class SceneController : MonoBehaviour {
 
             // display the panel for the floors if no scenario is loaded
             floorPanel.SetActive(true);
-            loadPedsButton.gameObject.SetActive(true);
+            loadPeds.gameObject.SetActive(true);
             floorChooserPanel.SetActive(true);
         }
     }
@@ -178,7 +180,7 @@ public class SceneController : MonoBehaviour {
 
         // do not display controls
         controlsForLoadedScenario.SetActive(false);
-        loadPedsButton.gameObject.SetActive(false);
+        loadPeds.gameObject.SetActive(false);
         floorChooserPanel.SetActive(false);
     }
 

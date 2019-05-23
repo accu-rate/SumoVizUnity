@@ -25,6 +25,7 @@ public class PedestrianMover : MonoBehaviour {
     [SerializeField] Sprite PlaySprite;
     [SerializeField] Button playButton;
     [SerializeField] Slider slider;
+    [SerializeField] Text playbackSpeedText;
     [SerializeField] Text startTime;
     [SerializeField] Text endTime;
     [SerializeField] float renderStep;
@@ -47,6 +48,8 @@ public class PedestrianMover : MonoBehaviour {
 
     internal void init(SimData simData) {
         peds = simData.getPedestrianGameObject();
+
+
         foreach (Transform ped in peds.transform) {
             ped.GetComponent<Pedestrian>().init();
         }
@@ -57,8 +60,19 @@ public class PedestrianMover : MonoBehaviour {
         maxTime = simData.getMaxTime();
         firstRound = true;
 
-        endTime.text = maxTime.ToString();
-        startTime.text = currentTime.ToString();
+        playbackSpeed.maxValue = 100;
+        playbackSpeedText.text = playbackSpeed.value.ToString("#.#") + "x";
+
+        //       endTime.text = maxTime.ToString();
+        //        startTime.text = currentTime.ToString();
+        TimeSpan time = TimeSpan.FromSeconds(maxTime);
+        TimeSpan starttime = TimeSpan.FromSeconds(currentTime);
+
+        //here backslash is must to tell that colon is
+        //not the part of format, it just a character that we want in output
+        endTime.text = time.ToString(@"hh\:mm\:ss");
+        startTime.text = starttime.ToString(@"hh\:mm\:ss");
+
         slider.value = 0;
         renderStep = 0.1f;
     }
@@ -66,10 +80,12 @@ public class PedestrianMover : MonoBehaviour {
     public void changePlaying() {
         if (playing) {
             playButton.image.sprite = PlaySprite;
+            playButton.transform.Find("PlayText").gameObject.GetComponent<Text>().text = "Play";
             playing = false;
         } else {
             playing = true;
             playButton.image.sprite = PauseSprite;
+            playButton.transform.Find("PlayText").gameObject.GetComponent<Text>().text = "Pause";
         }
         foreach (Transform ped in peds.transform) {
             ped.GetComponent<Pedestrian>().pause(playing);
@@ -91,7 +107,7 @@ public class PedestrianMover : MonoBehaviour {
 
         if (playing && initialized) {
             // old approach
-            currentTime = (currentTime + Time.deltaTime) * speedFactor;
+            currentTime = (currentTime + Time.deltaTime * speedFactor) ;
 
             if (currentTime >= maxTime) { // new round
                 currentTime = 0;
@@ -122,7 +138,8 @@ public class PedestrianMover : MonoBehaviour {
     private void updateSlider() {
         float lerpValue = currentTime / maxTime;
         slider.value = Mathf.Lerp(0f, 1f, (float)lerpValue);
-        startTime.text = currentTime.ToString("0.##");
+        TimeSpan starttime = TimeSpan.FromSeconds(currentTime);
+        startTime.text = starttime.ToString(@"hh\:mm\:ss");
     }
 
     public void dragSlider(BaseEventData ev) {
@@ -131,7 +148,8 @@ public class PedestrianMover : MonoBehaviour {
 
     private void dragSlider() {
         currentTime = slider.value * maxTime;
-        startTime.text = currentTime.ToString("0.##");
+        TimeSpan starttime = TimeSpan.FromSeconds(currentTime);
+        startTime.text = starttime.ToString(@"hh\:mm\:ss");
         if (initialized) {
             foreach (Transform ped in peds.transform) {
                 ped.GetComponent<Pedestrian>().move(currentTime);
@@ -147,10 +165,12 @@ public class PedestrianMover : MonoBehaviour {
 
     public void changeSpeed(BaseEventData ev) {
         speedFactor = playbackSpeed.value;
+        playbackSpeedText.text = speedFactor.ToString("#.#") + "x";
     }
 
     private void changeSpeed() {
         speedFactor = playbackSpeed.value;
+        playbackSpeedText.text = speedFactor.ToString("#.#") + "x";
     }
 
     public void resetSpeed() {
