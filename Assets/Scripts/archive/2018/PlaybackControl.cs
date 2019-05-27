@@ -161,7 +161,7 @@ public class PlaybackControl : MonoBehaviour {
 	*/
 
 
-    void Update() {
+/*    void Update() {
         if (playing) {
             try {
                 current_time = (current_time + (decimal)Time.deltaTime);// % total_time; // modulo, ha ha! nobody will ever notice that this leads to current_time = 0
@@ -204,5 +204,5 @@ public class PlaybackControl : MonoBehaviour {
                     break;
             }
         }
-    }
+    } */
 }

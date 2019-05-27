@@ -157,9 +157,9 @@ public class CameraPositionRecorder : MonoBehaviour {
     private void removePosition() {
 
         if (vals.Count > 0) { 
-        GoVals lastPosition = vals[vals.Count - 1];
-        vals.Remove(lastPosition);
-    }
+          GoVals lastPosition = vals[vals.Count - 1];
+          vals.Remove(lastPosition);
+        }
 
         // from: https://forum.unity.com/threads/deleting-all-chidlren-of-an-object.92827/ otherwise only every other object will be deleted
         var children = new List<GameObject>();
@@ -171,7 +171,7 @@ public class CameraPositionRecorder : MonoBehaviour {
 
 
         foreach (GoVals camerapos in vals) {
-            createTableEntry();
+            createTableEntry(camerapos.frame);
  
         }
 
@@ -179,6 +179,11 @@ public class CameraPositionRecorder : MonoBehaviour {
 
 
     private void createTableEntry() {
+        createTableEntry(pm.getCurrentTime());
+     }
+
+
+    private void createTableEntry(float frame) {
 
         GameObject newcolumn = Instantiate(columnsPrefab,
             new Vector3(columnsPrefab.transform.position.x, columnsPrefab.transform.position.y + yOffset * noOfCameraPositions, columnsPrefab.transform.position.z),
@@ -188,22 +193,32 @@ public class CameraPositionRecorder : MonoBehaviour {
         // add table entry
         newcolumn.transform.Find("Label").gameObject.GetComponent<Text>().text = "Position " + noOfCameraPositions;
 
-        TimeSpan currentTime = TimeSpan.FromSeconds(pm.getCurrentTime());
+        TimeSpan currentTime = TimeSpan.FromSeconds(frame);
         newcolumn.transform.Find("Time").gameObject.GetComponent<Text>().text = currentTime.ToString(@"hh\:mm\:ss");
 
- 
+
         noOfCameraPositions++;
 
 
 
     }
+
     void Update() {
         ReplayPoints();
     }
 
 
     void ReplayPoints() {
-        if (!replaying || !pm.isPlaying()) return;
+        if (!replaying)
+            return;
+
+        if (!pm.isPlaying()) {
+            pm.resetSlider();
+            pm.changePlaying();
+        }
+
+        if (vals.Count == 0)
+            return;
 
         // reset for first point, if slider was dragged backwards
         if (currentFrame > pm.getCurrentTime()) {

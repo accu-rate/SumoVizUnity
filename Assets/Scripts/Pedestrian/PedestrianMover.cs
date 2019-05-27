@@ -125,9 +125,9 @@ public class PedestrianMover : MonoBehaviour {
             updateSlider();
         }
 
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            playing = !playing;
-        }
+ //       if (Input.GetKeyDown(KeyCode.Space)) {
+ //           playing = !playing;
+ //       }
 
     }
 
