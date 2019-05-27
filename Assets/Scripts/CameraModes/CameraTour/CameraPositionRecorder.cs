@@ -240,13 +240,13 @@ public class CameraPositionRecorder : MonoBehaviour {
         replaying = !replaying;
 
         if (replaying) {
-            replay.GetComponentInChildren<Text>().text = "Stop Replay";
+            replay.GetComponentInChildren<Text>().text = "Stop Preview";
             addCameraPosition.enabled = false;
             saveCameraPosition.enabled = false;
             loadCameraPosition.enabled = false;
             resetPositions.enabled = false;
         } else {
-            replay.GetComponentInChildren<Text>().text = "Replay";
+            replay.GetComponentInChildren<Text>().text = "Start Preview";
             addCameraPosition.enabled = true;
             saveCameraPosition.enabled = true;
             loadCameraPosition.enabled = true;
