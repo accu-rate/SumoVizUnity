@@ -39,9 +39,17 @@ public class NormalScreenshots : MonoBehaviour {
             if (outFile == "") // = cancel was clicked in open file dialog
                 return;
             Screenrecorder.init(outFile);
+            if (!pm.isPlaying()) {
+                pm.changePlaying();
+            }
+            pm.replayCamera();
             record.image.sprite = RecordingSprite;
+            record.GetComponentInChildren<Text>().text = "Stop Recording";
         } else {
             record.image.sprite = RecordStartSprite;
+            pm.changePlaying();
+            pm.replayCamera();
+            record.GetComponentInChildren<Text>().text = "Record";
         }
         render = !render;
     }

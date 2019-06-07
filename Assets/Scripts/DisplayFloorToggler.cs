@@ -18,9 +18,8 @@ public class DisplayFloorToggler : MonoBehaviour {
         pm = GetComponentInParent<PedestrianMover>();
 
         //Clear the old options of the Dropdown menu
-        int yOffset = 0;
         foreach (String floorID in simData.getFloorIDs()) {
-            Vector3 pos = new Vector3(togglePrefab.transform.position.x, togglePrefab.transform.position.y - yOffset, togglePrefab.transform.position.z);
+            Vector3 pos = new Vector3(togglePrefab.transform.position.x, togglePrefab.transform.position.y, togglePrefab.transform.position.z);
             Toggle newToggle = Instantiate(togglePrefab);
             newToggle.GetComponentInChildren<Text>().text = floorID;
             newToggle.transform.parent = toggleFrame.transform;
