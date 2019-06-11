@@ -18,12 +18,14 @@ public class PedestrianMover : MonoBehaviour {
     private float maxTime = 0;
     // for recording purpose: only first round is recorded
     private bool firstRound;
+    private bool replaying = false;
 
 
     // set in inspector
     [SerializeField] Sprite PauseSprite;
     [SerializeField] Sprite PlaySprite;
     [SerializeField] Button playButton;
+    [SerializeField] Button replayButton;
     [SerializeField] Slider slider;
     [SerializeField] Text playbackSpeedText;
     [SerializeField] Text startTime;
@@ -32,14 +34,24 @@ public class PedestrianMover : MonoBehaviour {
     [SerializeField] Slider playbackSpeed;
     [SerializeField] InputField renderSpeedField;
 
+    CameraPositionRecorder camRecorder;
+
     public PedestrianMover() { }
 
     private void Start() {
         currentTime = 0.1f;
         playButton.onClick.AddListener(delegate () { this.changePlaying(); });
 
+        replayButton.onClick.AddListener(delegate () {
+            this.replayCamera();
+        });
+
+
         // TODO: We do not want to get a differnt value for render speed, let unity handle this.
         renderSpeedField.gameObject.SetActive(false);
+
+        camRecorder = GameObject.Find("Flycam").transform.gameObject.GetComponent<CameraPositionRecorder>();
+
     }
 
     internal bool isFirstRound() {
@@ -190,4 +202,27 @@ public class PedestrianMover : MonoBehaviour {
             renderSpeedField.text = renderStep.ToString();
         }
     }
+
+    public void replayCamera() {
+        replaying = !replaying;
+
+        if (replaying) {
+            replayButton.GetComponentInChildren<Text>().text = "Stop Preview";
+            playing = false;
+            changePlaying();
+            playButton.enabled = false;
+            camRecorder.prepareForReplaying();
+         } else {
+            replayButton.GetComponentInChildren<Text>().text = "Start Preview";
+            playing = true;
+            changePlaying();
+            playButton.enabled = true;
+            camRecorder.stopForReplaying();
+        }
+    }
+
+    public Boolean isInReplayMode() {
+        return replaying;
+    }
+
 }

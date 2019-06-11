@@ -35,14 +35,11 @@ public class CameraPositionRecorder : MonoBehaviour {
     }
 
     //a list of recorded values
-    List<GoVals> vals = new List<GoVals>();
+    SortedList<float, GoVals> vals = new SortedList<float, GoVals>();
 
-    //...are we replaying?
-    bool replaying = false;
 
     [SerializeField] Button addCameraPosition;
     [SerializeField] Button removeCameraPosition;
-    [SerializeField] Button replay;
     [SerializeField] Button loadCameraPosition;
     [SerializeField] Button saveCameraPosition;
     [SerializeField] Button resetPositions;
@@ -74,9 +71,6 @@ public class CameraPositionRecorder : MonoBehaviour {
             this.removePosition();
         });
 
-        replay.onClick.AddListener(delegate () {
-            this.replayCamera();
-        });
 
         loadCameraPosition.onClick.AddListener(delegate () {
             this.loadCameraPositions();
@@ -98,7 +92,7 @@ public class CameraPositionRecorder : MonoBehaviour {
             return;
         writer = new StreamWriter(savedPositions, false);
         writer.AutoFlush = true;
-        foreach  (GoVals val in  vals) {
+        foreach  (GoVals val in  vals.Values) {
             writer.WriteLine(val.position.x + ";" + val.position.y + ";" + val.position.z + ";" + val.rotation.x + ";" + val.rotation.y + ";" + val.rotation.z + ";" + val.rotation.w + ";" + val.frame.ToString());
 
         }
@@ -106,13 +100,12 @@ public class CameraPositionRecorder : MonoBehaviour {
     }
 
     private void loadCameraPositions() {
-        vals = new List<GoVals>();
+        vals = new SortedList<float, GoVals>();
         String[] savedPositions = StandaloneFileBrowser.OpenFilePanel("", "", "txt;*.txt", false); 
         if (savedPositions == null) // = cancel was clicked in open file dialog
             return;
         String savedPositionFile = savedPositions[0];
-         StreamReader file =
-          new StreamReader(savedPositionFile);
+        StreamReader file = new StreamReader(savedPositionFile);
         string line;
         while ((line = file.ReadLine()) != null) {
             string[] values = line.Split(';');
@@ -121,7 +114,7 @@ public class CameraPositionRecorder : MonoBehaviour {
                 Quaternion rotation;
                 float currentTime;
                 int id;
-                float x, y, z,r, t;
+                float x, y, z, r;
                 float.TryParse(values[0], out x);
                 float.TryParse(values[1],  out y);
                 float.TryParse(values[2],  out z);
@@ -134,52 +127,54 @@ public class CameraPositionRecorder : MonoBehaviour {
                 rotation = new Quaternion(x, y, z, r);
 
                 float.TryParse(values[7], out currentTime);
-
-                vals.Add(new GoVals(position, rotation, currentTime));
-                if (currentPoint == null) {
-                    currentPoint = vals[0];
-                    currentIndex = 0;
-                }
+                createPosition(position, rotation, currentTime);
             }
         }
+        createTableEntries();
     }
 
-    private void addPosition() {
-        vals.Add(new GoVals(tf.position, tf.rotation, pm.getCurrentTime()));
+
+    private void createPosition(Vector3 position, Quaternion rotation, float currentTime) {
+        GoVals value = new GoVals(position, rotation, currentTime);
+        if (vals.ContainsKey(currentTime))
+            return;
+
+        vals.Add(currentTime, value);
         if (currentPoint == null) {
-            currentPoint = vals[0];
+            currentPoint = value;
             currentIndex = 0;
         }
-        createTableEntry();
+   }
+
+    private void addPosition() {
+        createPosition(tf.position, tf.rotation, pm.getCurrentTime());
+        createTableEntries();
     }
 
 
     private void removePosition() {
 
         if (vals.Count > 0) { 
-          GoVals lastPosition = vals[vals.Count - 1];
-          vals.Remove(lastPosition);
+          GoVals lastPosition = vals.Values[vals.Count - 1];
+          vals.Remove(lastPosition.frame);
         }
 
+        createTableEntries();
+    }
+
+
+    private void createTableEntries() {
         // from: https://forum.unity.com/threads/deleting-all-chidlren-of-an-object.92827/ otherwise only every other object will be deleted
         var children = new List<GameObject>();
         foreach (Transform child in cameraPositionTable.transform) children.Add(child.gameObject);
         children.ForEach(child => Destroy(child));
 
- 
         noOfCameraPositions = 1;
 
-
-        foreach (GoVals camerapos in vals) {
+        foreach (GoVals camerapos in vals.Values) {
             createTableEntry(camerapos.frame);
- 
+
         }
-
-    }
-
-
-    private void createTableEntry() {
-        createTableEntry(pm.getCurrentTime());
      }
 
 
@@ -196,12 +191,9 @@ public class CameraPositionRecorder : MonoBehaviour {
         TimeSpan currentTime = TimeSpan.FromSeconds(frame);
         newcolumn.transform.Find("Time").gameObject.GetComponent<Text>().text = currentTime.ToString(@"hh\:mm\:ss");
 
-
         noOfCameraPositions++;
-
-
-
     }
+
 
     void Update() {
         ReplayPoints();
@@ -209,7 +201,7 @@ public class CameraPositionRecorder : MonoBehaviour {
 
 
     void ReplayPoints() {
-        if (!replaying)
+        if (!pm.isInReplayMode())
             return;
 
         if (!pm.isPlaying()) {
@@ -222,56 +214,52 @@ public class CameraPositionRecorder : MonoBehaviour {
 
         // reset for first point, if slider was dragged backwards
         if (currentFrame > pm.getCurrentTime()) {
-            currentPoint = vals[0];
+            currentPoint = vals.Values[0];
             currentIndex = 0;
         }
         currentFrame = pm.getCurrentTime();
 
         //if no further camera points are stored, stay at this position and stop replaying
-        if (pm.getCurrentTime() >= vals[vals.Count - 1].frame) {
+        if (pm.getCurrentTime() >= vals.Values[vals.Count - 1].frame) {
             currentIndex = 0;
-            currentPoint = vals[currentIndex];
+            currentPoint = vals.Values[currentIndex];
 
             // set to last camera position
-            tf.position = vals[vals.Count - 1].position;
-            tf.rotation = vals[vals.Count - 1].rotation;
+            tf.position = vals.Values[vals.Count - 1].position;
+            tf.rotation = vals.Values[vals.Count - 1].rotation;
             return;
         } else if (pm.getCurrentTime() >= currentPoint.frame) {
             //set our transform values
             tf.position = currentPoint.position;
             tf.rotation = currentPoint.rotation;
             currentIndex = currentIndex + 1;
-            currentPoint = vals[currentIndex];
+            currentPoint = vals.Values[currentIndex];
         } else if (currentIndex > 0) {
-            float timeBetweenPts = vals[currentIndex].frame - vals[currentIndex - 1].frame;
-            float ratio = (pm.getCurrentTime() - vals[currentIndex - 1].frame) / timeBetweenPts;
-            tf.position = Vector3.Lerp(vals[currentIndex - 1].position, vals[currentIndex].position, ratio);
-            tf.rotation = Quaternion.Lerp(vals[currentIndex - 1].rotation, vals[currentIndex].rotation, ratio);
+            float timeBetweenPts = vals.Values[currentIndex].frame - vals.Values[currentIndex - 1].frame;
+            float ratio = (pm.getCurrentTime() - vals.Values[currentIndex - 1].frame) / timeBetweenPts;
+            tf.position = Vector3.Lerp(vals.Values[currentIndex - 1].position, vals.Values[currentIndex].position, ratio);
+            tf.rotation = Quaternion.Lerp(vals.Values[currentIndex - 1].rotation, vals.Values[currentIndex].rotation, ratio);
         }
     }
 
+    public void prepareForReplaying() {
+        addCameraPosition.enabled = false;
+        saveCameraPosition.enabled = false;
+        loadCameraPosition.enabled = false;
+        resetPositions.enabled = false;
 
-    void replayCamera() {
-        replaying = !replaying;
-
-        if (replaying) {
-            replay.GetComponentInChildren<Text>().text = "Stop Preview";
-            addCameraPosition.enabled = false;
-            saveCameraPosition.enabled = false;
-            loadCameraPosition.enabled = false;
-            resetPositions.enabled = false;
-        } else {
-            replay.GetComponentInChildren<Text>().text = "Start Preview";
-            addCameraPosition.enabled = true;
-            saveCameraPosition.enabled = true;
-            loadCameraPosition.enabled = true;
-            resetPositions.enabled = true;
-        }
     }
+
+    public void stopForReplaying() {
+        addCameraPosition.enabled = true;
+        saveCameraPosition.enabled = true;
+        loadCameraPosition.enabled = true;
+        resetPositions.enabled = true;
+    }
+
 
     public void Reset() {
-        replaying = false;
-        vals = new List<GoVals>();
+        vals = new SortedList<float, GoVals>();
         currentPoint = null;
     }
 }

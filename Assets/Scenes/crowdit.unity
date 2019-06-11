@@ -1597,7 +1597,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 412416586}
   m_HandleRect: {fileID: 412416585}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0.9999999
   m_Size: 0.15431131
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -4928,7 +4928,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 175365222}
   m_HandleRect: {fileID: 175365221}
   m_Direction: 2
@@ -5329,7 +5329,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Delegates:
-  - eventID: 3
+  - eventID: 5
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1905496969}
+          m_MethodName: changeSpeed
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  - eventID: 4
     callback:
       m_PersistentCalls:
         m_Calls:
@@ -6501,6 +6518,7 @@ MonoBehaviour:
   PauseSprite: {fileID: 21300000, guid: 6a242f285fb6f7440b988a2fefce8bce, type: 3}
   PlaySprite: {fileID: 21300000, guid: f57463b399f14794983cabd02cef81df, type: 3}
   playButton: {fileID: 1773787636}
+  replayButton: {fileID: 0}
   slider: {fileID: 1089173240}
   playbackSpeedText: {fileID: 913126968}
   startTime: {fileID: 1002220584}
@@ -6695,7 +6713,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   addCameraPosition: {fileID: 1372781605}
   removeCameraPosition: {fileID: 140372184}
-  replay: {fileID: 376537731}
   loadCameraPosition: {fileID: 2009272694}
   saveCameraPosition: {fileID: 505716177}
   resetPositions: {fileID: 1052376125}
