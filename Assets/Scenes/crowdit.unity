@@ -691,7 +691,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 175365220}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -700,8 +700,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0.28}
-  m_SizeDelta: {x: 20, y: 19.43}
+  m_AnchoredPosition: {x: -0.00000047683716, y: 0}
+  m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &175365222
 MonoBehaviour:
@@ -1597,8 +1597,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 412416586}
   m_HandleRect: {fileID: 412416585}
   m_Direction: 2
-  m_Value: 0.9999999
-  m_Size: 0.15431131
+  m_Value: 0.9999997
+  m_Size: 0.1543113
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4928,12 +4928,12 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
-  m_TargetGraphic: {fileID: 175365222}
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1352215232}
   m_HandleRect: {fileID: 175365221}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.9999994
+  m_Value: 0
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -6039,18 +6039,18 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 0.9716981, g: 0.95543414, b: 0.9487807, a: 1}
     m_HighlightedColor: {r: 0.9622642, g: 0.9596599, b: 0.9395693, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.7843138, g: 0.7843138, b: 0.7843138, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 21300000, guid: 0efbeff03d32add41addfde04a2d3404, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -6518,7 +6518,7 @@ MonoBehaviour:
   PauseSprite: {fileID: 21300000, guid: 6a242f285fb6f7440b988a2fefce8bce, type: 3}
   PlaySprite: {fileID: 21300000, guid: f57463b399f14794983cabd02cef81df, type: 3}
   playButton: {fileID: 1773787636}
-  replayButton: {fileID: 0}
+  replayButton: {fileID: 376537731}
   slider: {fileID: 1089173240}
   playbackSpeedText: {fileID: 913126968}
   startTime: {fileID: 1002220584}
