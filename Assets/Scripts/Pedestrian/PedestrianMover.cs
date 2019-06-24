@@ -24,6 +24,10 @@ public class PedestrianMover : MonoBehaviour {
     // set in inspector
     [SerializeField] Sprite PauseSprite;
     [SerializeField] Sprite PlaySprite;
+    [SerializeField] Sprite PlayDisabledSprite;
+    [SerializeField] Sprite ReplayDisabledSprite;
+    [SerializeField] Sprite ReplayStartSprite;
+    [SerializeField] Sprite ReplayStopSprite;
     [SerializeField] Button playButton;
     [SerializeField] Button replayButton;
     [SerializeField] Slider slider;
@@ -107,6 +111,24 @@ public class PedestrianMover : MonoBehaviour {
 
     public bool isPlaying() {
         return playing;
+    }
+
+    public void playIsDisabled() {
+        playButton.enabled = false;
+        playButton.image.sprite = PlayDisabledSprite;
+        //playButton.transform.Find("PlayText").gameObject.GetComponent<Text>().text = "Play";
+    }
+
+    public void previewIsDisabled() {
+        replayButton.enabled = false;
+        replayButton.image.sprite = ReplayDisabledSprite;
+        replayButton.transform.Find("ReplayText").gameObject.GetComponent<Text>().text = "Preview";
+    }
+
+    public void previewIsActiv() {
+        replayButton.enabled = true;
+        replayButton.image.sprite = ReplayStartSprite;
+        replayButton.transform.Find("ReplayText").gameObject.GetComponent<Text>().text = "Preview";
     }
 
     public void Reset() {
@@ -211,13 +233,17 @@ public class PedestrianMover : MonoBehaviour {
             playing = false;
             changePlaying();
             playButton.enabled = false;
+            playButton.image.sprite = PlayDisabledSprite;
+            playButton.transform.Find("PlayText").gameObject.GetComponent<Text>().text = "Play";
             camRecorder.prepareForReplaying();
+            replayButton.image.sprite = ReplayStopSprite;
          } else {
             replayButton.GetComponentInChildren<Text>().text = "Start Preview";
             playing = true;
             changePlaying();
             playButton.enabled = true;
             camRecorder.stopForReplaying();
+            replayButton.image.sprite = ReplayStartSprite;
         }
     }
 

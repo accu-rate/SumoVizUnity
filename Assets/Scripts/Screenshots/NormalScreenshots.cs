@@ -22,6 +22,8 @@ public class NormalScreenshots : MonoBehaviour {
     [SerializeField] Button takeScreenshot;
     [SerializeField] Sprite RecordStartSprite;
     [SerializeField] Sprite RecordingSprite;
+    [SerializeField] Sprite ScreenshotSprite;
+    [SerializeField] Sprite ScreenshotDisabledSprite;
 
 
     void Start() {
@@ -30,6 +32,7 @@ public class NormalScreenshots : MonoBehaviour {
         Application.runInBackground = true;
         record.onClick.AddListener(delegate () { renderScreen(); });
         takeScreenshot.onClick.AddListener(delegate () { saveScreenshot(); });
+        
     }
 
     private void renderScreen() {
@@ -45,11 +48,19 @@ public class NormalScreenshots : MonoBehaviour {
             pm.replayCamera();
             record.image.sprite = RecordingSprite;
             record.GetComponentInChildren<Text>().text = "Stop Recording";
-        } else {
+            pm.playIsDisabled();
+            pm.previewIsDisabled();
+            takeScreenshot.enabled = false;
+            takeScreenshot.image.sprite = ScreenshotDisabledSprite;
+        }
+        else {
             record.image.sprite = RecordStartSprite;
             pm.changePlaying();
             pm.replayCamera();
             record.GetComponentInChildren<Text>().text = "Record";
+            pm.previewIsActiv();
+            takeScreenshot.enabled = true;
+            takeScreenshot.image.sprite = ScreenshotSprite;
         }
         render = !render;
     }

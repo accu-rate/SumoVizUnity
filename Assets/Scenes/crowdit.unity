@@ -1016,7 +1016,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1, y: 0}
+  m_AnchoredPosition: {x: 2, y: 0}
   m_SizeDelta: {x: 130, y: 15}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &354297759
@@ -1120,7 +1120,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 6eb7683f48108324eabedc8c668168f1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9c8ee93721bf1d649a9bcb83aa3c45f7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1342,7 +1342,7 @@ GameObject:
   - component: {fileID: 432421169}
   - component: {fileID: 432421168}
   m_Layer: 5
-  m_Name: Camera
+  m_Name: CameraSettings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1415,6 +1415,74 @@ PrefabInstance:
     - target: {fileID: 166258, guid: 2ea12a2ab6365a64995624be5545cb0c, type: 3}
       propertyPath: m_Name
       value: Add camera position
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466256, guid: 2ea12a2ab6365a64995624be5545cb0c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466256, guid: 2ea12a2ab6365a64995624be5545cb0c, type: 3}
+      propertyPath: m_Transition
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466256, guid: 2ea12a2ab6365a64995624be5545cb0c, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466256, guid: 2ea12a2ab6365a64995624be5545cb0c, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466256, guid: 2ea12a2ab6365a64995624be5545cb0c, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466256, guid: 2ea12a2ab6365a64995624be5545cb0c, type: 3}
+      propertyPath: m_Colors.m_PressedColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466256, guid: 2ea12a2ab6365a64995624be5545cb0c, type: 3}
+      propertyPath: m_Colors.m_PressedColor.g
+      value: 0.995283
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466256, guid: 2ea12a2ab6365a64995624be5545cb0c, type: 3}
+      propertyPath: m_Colors.m_PressedColor.b
+      value: 0.995283
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466256, guid: 2ea12a2ab6365a64995624be5545cb0c, type: 3}
+      propertyPath: m_Colors.m_NormalColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466256, guid: 2ea12a2ab6365a64995624be5545cb0c, type: 3}
+      propertyPath: m_Colors.m_NormalColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466256, guid: 2ea12a2ab6365a64995624be5545cb0c, type: 3}
+      propertyPath: m_Colors.m_NormalColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466256, guid: 2ea12a2ab6365a64995624be5545cb0c, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466256, guid: 2ea12a2ab6365a64995624be5545cb0c, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466256, guid: 2ea12a2ab6365a64995624be5545cb0c, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466256, guid: 2ea12a2ab6365a64995624be5545cb0c, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466256, guid: 2ea12a2ab6365a64995624be5545cb0c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466256, guid: 2ea12a2ab6365a64995624be5545cb0c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 22466258, guid: 2ea12a2ab6365a64995624be5545cb0c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1517,6 +1585,30 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 12800000, guid: 128ea4810d6eaa34b8b997bd0ea97045,
         type: 3}
+    - target: {fileID: 11466254, guid: 2ea12a2ab6365a64995624be5545cb0c, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466254, guid: 2ea12a2ab6365a64995624be5545cb0c, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466254, guid: 2ea12a2ab6365a64995624be5545cb0c, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466254, guid: 2ea12a2ab6365a64995624be5545cb0c, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466254, guid: 2ea12a2ab6365a64995624be5545cb0c, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466258, guid: 2ea12a2ab6365a64995624be5545cb0c, type: 3}
+      propertyPath: m_ShowMaskGraphic
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2ea12a2ab6365a64995624be5545cb0c, type: 3}
 --- !u!1 &461940335
@@ -1597,8 +1689,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 412416586}
   m_HandleRect: {fileID: 412416585}
   m_Direction: 2
-  m_Value: 0.9999997
-  m_Size: 0.1543113
+  m_Value: 1
+  m_Size: 0.15431131
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1790,7 +1882,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1, y: 0}
+  m_AnchoredPosition: {x: 2, y: 0}
   m_SizeDelta: {x: 130, y: 11.68}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &469551236
@@ -2926,7 +3018,7 @@ MonoBehaviour:
     m_NormalColor: {r: 0.9716981, g: 0.95543414, b: 0.9487807, a: 1}
     m_HighlightedColor: {r: 0.9622642, g: 0.9596599, b: 0.9395693, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -3278,6 +3370,8 @@ MonoBehaviour:
   takeScreenshot: {fileID: 0}
   RecordStartSprite: {fileID: 0}
   RecordingSprite: {fileID: 0}
+  ScreenshotSprite: {fileID: 0}
+  ScreenshotDisabledSprite: {fileID: 0}
 --- !u!4 &987994512
 Transform:
   m_ObjectHideFlags: 0
@@ -3326,7 +3420,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1, y: -0.0000097752}
+  m_AnchoredPosition: {x: 2, y: -0.0000097752}
   m_SizeDelta: {x: 39.9, y: 12.48}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &996611024
@@ -3488,7 +3582,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 3.089981, y: 3.1299884}
+  m_AnchoredPosition: {x: 3.089981, y: 3.1300354}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1010933940
@@ -3508,10 +3602,10 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 5
     m_Bottom: 0
-  m_ChildAlignment: 3
-  m_Spacing: 0
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
+  m_ChildAlignment: 4
+  m_Spacing: -5
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
 --- !u!114 &1010933941
@@ -3992,7 +4086,7 @@ GameObject:
   - component: {fileID: 1069023377}
   - component: {fileID: 1069023376}
   m_Layer: 5
-  m_Name: Text
+  m_Name: ReplayText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4933,7 +5027,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 175365221}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99999994
+  m_Size: 0.99999934
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5029,7 +5123,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1, y: -0.000015259}
+  m_AnchoredPosition: {x: 2, y: -0.000015259}
   m_SizeDelta: {x: 18.01, y: 12.48}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1376742901
@@ -5741,7 +5835,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1, y: -0.0000076293945}
+  m_AnchoredPosition: {x: 2, y: -0.0000076293945}
   m_SizeDelta: {x: 130, y: 15}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1729193146
@@ -5965,7 +6059,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 9849c188d6e2a2945beb64c1a9a9f8d3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5b6c1c2caec5e1d499b0c680cbb022f6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6517,6 +6611,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PauseSprite: {fileID: 21300000, guid: 6a242f285fb6f7440b988a2fefce8bce, type: 3}
   PlaySprite: {fileID: 21300000, guid: f57463b399f14794983cabd02cef81df, type: 3}
+  PlayDisabledSprite: {fileID: 21300000, guid: 0efbeff03d32add41addfde04a2d3404, type: 3}
+  ReplayDisabledSprite: {fileID: 21300000, guid: 58ace679c36a37e49b9f095480cbb0a1,
+    type: 3}
+  ReplayStartSprite: {fileID: 21300000, guid: 9c8ee93721bf1d649a9bcb83aa3c45f7, type: 3}
+  ReplayStopSprite: {fileID: 21300000, guid: 6eb7683f48108324eabedc8c668168f1, type: 3}
   playButton: {fileID: 1773787636}
   replayButton: {fileID: 376537731}
   slider: {fileID: 1089173240}
@@ -6735,8 +6834,11 @@ MonoBehaviour:
   fps: 25
   record: {fileID: 1754070032}
   takeScreenshot: {fileID: 924655629}
-  RecordStartSprite: {fileID: 21300000, guid: 9849c188d6e2a2945beb64c1a9a9f8d3, type: 3}
+  RecordStartSprite: {fileID: 21300000, guid: 5b6c1c2caec5e1d499b0c680cbb022f6, type: 3}
   RecordingSprite: {fileID: 21300000, guid: 9849c188d6e2a2945beb64c1a9a9f8d3, type: 3}
+  ScreenshotSprite: {fileID: 21300000, guid: 2d52949b4a9009f4981be43627881704, type: 3}
+  ScreenshotDisabledSprite: {fileID: 21300000, guid: 33f7a3edb0928c14f89a6c3e94e9fc47,
+    type: 3}
 --- !u!114 &1953789400
 MonoBehaviour:
   m_ObjectHideFlags: 0
