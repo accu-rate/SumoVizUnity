@@ -247,7 +247,7 @@ public class CameraPositionRecorder : MonoBehaviour {
         saveCameraPosition.enabled = false;
         loadCameraPosition.enabled = false;
         resetPositions.enabled = false;
-
+        removeCameraPosition.enabled = false;
     }
 
     public void stopForReplaying() {
@@ -255,6 +255,8 @@ public class CameraPositionRecorder : MonoBehaviour {
         saveCameraPosition.enabled = true;
         loadCameraPosition.enabled = true;
         resetPositions.enabled = true;
+        removeCameraPosition.enabled = true;
+
     }
 
 
