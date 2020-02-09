@@ -42,7 +42,7 @@
 
 using UnityEngine;
 using System.Collections;
-
+using UnityEngine.UI;
 
 public class DebugConsole : MonoBehaviour
 {
@@ -140,7 +140,6 @@ public class DebugConsole : MonoBehaviour
 			if (DebugGui == null)  // If an external GUIText is not set, provide the default GUIText
 			{
 				DebugGui = new GameObject();
-				DebugGui.AddComponent<GUIText>();
 				DebugGui.name = "DebugGUI(0)";
 				DebugGui.transform.position = defaultGuiPosition;
 				DebugGui.transform.localScale = defaultGuiScale;
@@ -187,37 +186,30 @@ public class DebugConsole : MonoBehaviour
 	bool connectedToMouse = false;  
 	void Update()
 	{
-		// If we are visible and the screenHeight has changed, reset linespacing
-		if (visible == true && screenHeight != Screen.height)
-		{
-			InitGuis();
-		}
-		if (draggable == true)
-		{
-			if (Input.GetMouseButtonDown(0))
-			{
-				if (connectedToMouse == false && DebugGui.GetComponent<GUIText>().HitTest((Vector3)Input.mousePosition) == true)
-				{
-					connectedToMouse = true;
-				}
-				else if (connectedToMouse == true)
-				{
-					connectedToMouse = false;
-				}
+        // If we are visible and the screenHeight has changed, reset linespacing
+        if (visible == true && screenHeight != Screen.height) {
+            InitGuis();
+        }
+        if (draggable == true) {
+            //if (Input.GetMouseButtonDown(0)) {
+            //    if (connectedToMouse == false && DebugGui.GetComponent<Text>().HitTest(Input.mousePosition) == true) {
+            //        connectedToMouse = true;
+            //    } else if (connectedToMouse == true) {
+            //        connectedToMouse = false;
+            //    }
 
-			}
+            //}
 
-			if (connectedToMouse == true)
-			{
-				float posX = DebugGui.transform.position.x;
-				float posY = DebugGui.transform.position.y;
-				posX = Input.mousePosition.x / Screen.width;
-				posY = Input.mousePosition.y / Screen.height;
-				DebugGui.transform.position = new Vector3(posX, posY, 0F);
-			}
-		}
+            if (connectedToMouse == true) {
+                float posX = DebugGui.transform.position.x;
+                float posY = DebugGui.transform.position.y;
+                posX = Input.mousePosition.x / Screen.width;
+                posY = Input.mousePosition.y / Screen.height;
+                DebugGui.transform.position = new Vector3(posX, posY, 0F);
+            }
+        }
 
-	}
+    }
 	//+++++++++ INTERFACE FUNCTIONS ++++++++++++++++++++++++++++++++
 	public static void Log(string message, string color)
 	{
@@ -283,8 +275,8 @@ public class DebugConsole : MonoBehaviour
 			int x = 0;
 			while (x < guis.Count)
 			{
-				GameObject gui = (GameObject)guis[x];   
-				gui.GetComponent<GUIText>().text = "";
+				//GameObject gui = (GameObject)guis[x];   
+				//gui.GetComponent<GUIText>().text = "";
 				//increment and loop
 				x += 1;
 			}
@@ -346,18 +338,18 @@ public class DebugConsole : MonoBehaviour
 					GameObject gui = (GameObject)guis[x];   
 
 					//set our color
-					switch ((string)colors[x])
-					{
-					case "normal": gui.GetComponent<GUIText>().material.color = normal;
-						break;
-					case "warning": gui.GetComponent<GUIText>().material.color = warning;
-						break;
-					case "error": gui.GetComponent<GUIText>().material.color = error;
-						break;
-					}
+					//switch ((string)colors[x])
+					//{
+					//case "normal": gui.GetComponent<GUIText>().material.color = normal;
+					//	break;
+					//case "warning": gui.GetComponent<GUIText>().material.color = warning;
+					//	break;
+					//case "error": gui.GetComponent<GUIText>().material.color = error;
+					//	break;
+					//}
 
 					//now set the text for this element
-					gui.GetComponent<GUIText>().text = (string)messages[x];
+					//gui.GetComponent<GUIText>().text = (string)messages[x];
 
 					//increment and loop
 					x += 1;
