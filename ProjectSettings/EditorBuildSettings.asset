@@ -20,7 +20,10 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
-    path: Assets/Scenes/crowdit-pullman.unity
+  - enabled: 0
+    path: Assets/Scenes/archive/crowdit-pullman.unity
     guid: aa30bb938aadeb64689ed53f702650fb
+  - enabled: 1
+    path: Assets/Scenes/crowdit_pullman_v2.unity
+    guid: 00d3b511707bb6945b447bb9004f782e
   m_configObjects: {}

@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class DisplayFloorToggler : MonoBehaviour {
     [SerializeField] Toggle togglePrefab;
     [SerializeField] GameObject toggleFrame;
+    [SerializeField] Toggle showPeds;
+
     private SimData simData;
     private List<int> hiddenFloorLevels;
     private PedestrianMover pm;
@@ -56,22 +58,33 @@ public class DisplayFloorToggler : MonoBehaviour {
         }
 
     }
+
     // Update is called once per frame
     void Update () {
         if (simData == null)
             return;
         try {
-            foreach (Pedestrian ped in simData.getPedestrianGameObject().GetComponentsInChildren<Pedestrian>()) {
-                if (hiddenFloorLevels.Contains(ped.getCurrentFloorID(pm.getCurrentTime()))){ 
-                    foreach (Renderer r in ped.GetComponentsInChildren<Renderer>()) {
-                        r.enabled = false;
-                    }
-                } else {
-                    if (!ped.reachedTarget()) {
+            if (!showPeds.isOn) {
+                foreach (Pedestrian ped in simData.getPedestrianGameObject().GetComponentsInChildren<Pedestrian>()) {
+                    if (hiddenFloorLevels.Contains(ped.getCurrentFloorID(pm.getCurrentTime()))) {
                         foreach (Renderer r in ped.GetComponentsInChildren<Renderer>()) {
-                            r.enabled = true;
+                            r.enabled = false;
+                        }
+                    } else {
+                        if (!ped.reachedTarget()) {
+                            foreach (Renderer r in ped.GetComponentsInChildren<Renderer>()) {
+                                r.enabled = true;
+                            }
                         }
                     }
+                }
+            } else {
+                foreach (Pedestrian ped in simData.getPedestrianGameObject().GetComponentsInChildren<Pedestrian>()) {
+                        if (!ped.reachedTarget()) {
+                            foreach (Renderer r in ped.GetComponentsInChildren<Renderer>()) {
+                                r.enabled = true;
+                            }
+                        }
                 }
             }
         } catch (NullReferenceException) {
